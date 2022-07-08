@@ -1,0 +1,87 @@
+#' Take a datatable and return the results of BLASTing it
+#'
+#' Given a datatable with the column names of the datatable returned by
+#' RCRUX.dev::get_blast_seeds(), use blastdbcmd to convert entries into
+#' fasta files, then uses blastn to query ncbi databases for those
+#' sequences. It compiles the results of blastn into a data.frame that it
+#' returns.
+#' Additionally, t saves its state as text files in a specified directory with
+#' each iteration.
+#'
+#' @param blast_seeds a data.frame formatted like the output from
+#'        get_blast_seeds_multi_taxa_or_db
+#' @param save_dir a directory in which to create text files representing the
+#'        current state
+#' @param db_dir a directory with a blast-formatted database
+#' @param accession_taxa_path a path to an sql created by
+#'        taxonomizr::prepareDatabase()
+#' @param sample_size the number of entries to accumulate into a fasta before
+#'        calling blastn
+#' @param wildcards a character vector representing the number of wildcards to
+#'        discard
+#' @return A data.frame representing the output of blastn
+#' @export
+blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
+                            sample_size = 1000, wildcards = "NNNN") {
+    output_table <- data.frame(matrix(ncol = 10, nrow = 0))
+    colnames(output_table) <-  c("accession",
+                                "amplicon_length",
+                                "pident",
+                                "query_accession",
+                                "accession_sequence_length", 
+                                "amplicon_start",
+                                "amplicon_stop",
+                                "sequence",
+                                "evalue",
+                                "BLAST_db_taxids")
+    num_rounds <- 0
+    too_many_ns <- c()
+    not_in_db <- c()
+    unsampled_indices <- c(seq_len(nrow(blast_seeds)))
+    if (file.exists(paste(save_dir, "unsampled_indices.txt", sep = "/"))) {
+        rounds_path <- paste(save_dir, "num_rounds.txt", sep = "/")
+        num_rounds <- as.numeric(readLines(con = rounds_path))
+
+        ns_path <- paste(save_dir, "too_many_Ns.txt", sep = "/")
+        too_many_ns <- as.numeric(readLines(con = ns_path))
+
+        not_in_db_path <- paste(save_dir, "not_in_db.txt", sep = "/")
+        not_in_db <- as.numeric(readLines(con = not_in_db_path))
+    }
+
+    while (length(unsampled_indices) > 0) {
+        # sample some of them, removing them from the vector
+        sample_indices <- smart_sample(unsampled_indices, sample_size)
+        unsampled_indices <-
+            unsampled_indices[!(unsampled_indices %in% sample_indices)]
+
+        # run blastdbcmd on each
+        # sort results into appropriate buckets
+        aggregate_fasta <- ""
+        for (index in sample_indices) {
+            fasta <- run_blastdbcmd(blast_seeds[index, ], db_dir)
+            if (nchar(fasta) == 0) {
+                append(not_in_db, index)
+            }
+            else if (length(grep(wildcards, fasta)) > 0) {
+                append(too_many_ns, index)
+            }
+            else {
+                aggregate_fasta <- paste(aggregate_fasta, fasta, sep = "\n")
+            }
+        }
+
+        # run blastn and aggregate results
+        blastn_output <- run_blastn(aggregate_fasta, db_dir)
+        output_table <- rbind(output_table, blastn_output)
+
+        # save the state of the blast
+        num_rounds <- num_rounds + 1
+        save_state(save_dir, output_table, unsampled_indices, too_many_ns,
+            not_in_db)
+    }
+
+    output_table_taxonomy <-
+        get_taxonomizer_from_accession(output_table, accession_taxa_path)
+    return(output_table_taxonomy)
+}
