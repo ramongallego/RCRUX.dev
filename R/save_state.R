@@ -5,7 +5,8 @@
 #' @param unsampled_indices a vector of indices not yet sampled
 #' @param too_many_ns a vector of indices that result
 #'        in a fasta with too many Ns
-#' @param not_in_db 
+#' @param not_in_db a vector of indices not found in the local
+#'        database
 #' @return NULL
 #' @export
 save_state <- function(dir, output_table, unsampled_indices, too_many_ns,
