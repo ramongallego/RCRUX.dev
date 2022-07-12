@@ -20,6 +20,7 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
     # 1) This way, the script can still generally be visualized functionally
     # 2) It allows for easy changes if we ever figure out an elegant way to do
     # the handoff
+    # Use tempfile() for this instead
     write(fasta, file = temp)
 
     # Determine arguments
@@ -41,6 +42,8 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
                                     wait = TRUE,
                                     stdout = TRUE)
     }
+    # Is there a way to add or remove the "/" based on need?
+    # Maybe just look for a "/" on the end?
     else {
         blastn <- paste(ncbi_bin, "blastn", "/")
         blastn_output <- system2(command = blastn, 

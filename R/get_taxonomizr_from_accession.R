@@ -5,11 +5,11 @@
 #' @return the data.frame with taxonomy data
 #' @export
 get_taxonomizer_from_accession <- function(input, accessionTaxa_path) {
-    input_taxid <- taxonomizr::accessionToTaxa(input$accession,
+    input_taxids <- taxonomizr::accessionToTaxa(input$accession,
                                             accessionTaxa_path)
 
-    input_taxonomy <- taxonomizr::getTaxonomy(input_taxid, accessionTaxa_path,
-                                desiredTaxa = c("species","superkingdom",
+    input_taxonomy <- taxonomizr::getTaxonomy(input_taxids, accessionTaxa_path,
+                                desiredTaxa = c("species", "superkingdom",
                                 "kingdom", "phylum", "subphylum", "superclass",
                                 "class", "subclass", "order", "family",
                                 "subfamily", "genus", "infraorder", "subcohort",
@@ -17,9 +17,8 @@ get_taxonomizer_from_accession <- function(input, accessionTaxa_path) {
                                 "subspecies", "subgenus", "species group",
                                 "parvorder", "varietas"))
 
-    input_taxonomy <- cbind("accession" = input$accession,
-                            "taxID" = input_taxid, input_taxonomy)
-    input_taxonomy <- tibble::as_tibble(input_taxonomy)
-    # Join the blast output and taxonomy tibbles
-    return(dplyr::full_join(input, input_taxonomy, by = "accession"))
+    # Use mutate to add colummns because it already (correctly) assumed that
+    # that stuff would be in the right order and mutate uses memory well.
+    output <- NULL
+    return(output)
 }

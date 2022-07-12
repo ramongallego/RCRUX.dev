@@ -5,7 +5,7 @@
 #' fasta files, then uses blastn to query ncbi databases for those
 #' sequences. It compiles the results of blastn into a data.frame that it
 #' returns.
-#' Additionally, t saves its state as text files in a specified directory with
+#' Additionally, it saves its state as text files in a specified directory with
 #' each iteration.
 #'
 #' @param blast_seeds a data.frame formatted like the output from
@@ -24,6 +24,7 @@
 blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
                             sample_size = 1000, wildcards = "NNNN") {
     output_table <- data.frame(matrix(ncol = 10, nrow = 0))
+    # Will need extra column for "issues" if we go that route
     colnames(output_table) <-  c("accession",
                                 "amplicon_length",
                                 "pident",
@@ -34,10 +35,15 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
                                 "sequence",
                                 "evalue",
                                 "BLAST_db_taxids")
+
+    # Default values for tracker variables
     num_rounds <- 0
     too_many_ns <- c()
     not_in_db <- c()
     unsampled_indices <- c(seq_len(nrow(blast_seeds)))
+
+    # Pick up where it left off
+    # This needs to add rcrux_blast_data onto the path
     if (file.exists(paste(save_dir, "unsampled_indices.txt", sep = "/"))) {
         rounds_path <- paste(save_dir, "num_rounds.txt", sep = "/")
         num_rounds <- as.numeric(readLines(con = rounds_path))
@@ -60,6 +66,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         aggregate_fasta <- ""
         for (index in sample_indices) {
             fasta <- run_blastdbcmd(blast_seeds[index, ], db_dir)
+            # Maybe in these cases we can just append directly to output?
             if (nchar(fasta) == 0) {
                 append(not_in_db, index)
             }
@@ -73,7 +80,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
 
         # run blastn and aggregate results
         blastn_output <- run_blastn(aggregate_fasta, db_dir)
-        output_table <- rbind(output_table, blastn_output)
+        output_table <- tibble::add_row(output_table, blastn_output)
 
         # save the state of the blast
         num_rounds <- num_rounds + 1
@@ -81,6 +88,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
             not_in_db)
     }
 
+    # If we get a taxid from blastn can we just use that?
     output_table_taxonomy <-
         get_taxonomizer_from_accession(output_table, accession_taxa_path)
     return(output_table_taxonomy)
