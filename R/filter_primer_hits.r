@@ -5,4 +5,6 @@
 #' @export
 filter_primer_hits <- function(hits_table) {
     # filter like get_blast_seeds used to
+    output <- hits_table[!(accession == "")]
+    
 }

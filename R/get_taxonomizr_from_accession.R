@@ -17,8 +17,9 @@ get_taxonomizer_from_accession <- function(input, accessionTaxa_path) {
                                 "subspecies", "subgenus", "species group",
                                 "parvorder", "varietas"))
 
+    output <- dplyr::mutate(input, taxid = input_taxids, data.frame(input_taxonomy))
+
     # Use mutate to add colummns because it already (correctly) assumed that
     # that stuff would be in the right order and mutate uses memory well.
-    output <- NULL
     return(output)
 }
