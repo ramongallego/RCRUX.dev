@@ -1,3 +1,12 @@
+#' Call primer_search with several parameters and aggregate the results
+#'
+#' This function acts like primer_search and parse_primer hits all in one. Its
+#' parameters are very similar to primer_search, but it takes vectors for
+#' organism and for database and performs a primer search for each combination.
+#' It downgrades errors from primer_search and parse_primer_hits into warnings.
+#' This is useful when searching for a large number of different combinations,
+#' allowing the function to output successful results.
+#'
 #' @param forward the forward primer
 #' @param reverse the reverse primer
 #' @param organisms a character vector containing an id or name parseable by

@@ -49,7 +49,7 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
 
     # Start by making the directory and checking for the sql and whatnot.
     dir.create(file.path(paste0(file_out_dir, Metabarcode_name)))
-    if(!file.exists(accessionTaxa)) {
+    if (!file.exists(accessionTaxa)) {
       stop("accessionTaxa does not exist")
     }
     out <- paste0(file_out_dir, Metabarcode_name, "/")
@@ -59,16 +59,22 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
     results_table <- iterative_primer_search(forward_primer, reverse_primer,
                                             organism,
                                             primer_specificity_database, ...)
+    # Throw an error if there are no results
+    if (nrow(results_table) < 1) {
+      stop("Primer search returned no hits.")
+    }
+
     filtered_results_table <- filter_primer_hits(results_table)
-    output_table <-
+    taxonomized_results_table <-
       get_taxonomizr_from_accession(filtered_results_table, accessionTaxa)
 
   # save output
-  save_output_as_csv(to_be_blasted_entries, "_primerTree_output_with_taxonomy", out, Metabarcode_name)
-  make_hist_save_pdf(primer_search_blast_out$product_length, "_pre_filter_product_lengths_of_primerTree_output",  out, Metabarcode_name)
-  save_output_as_csv(primer_search_blast_out, "_raw_primerTree_output", out, Metabarcode_name)
-  make_hist_save_pdf(bla$product_length, "_post_filter_product_lengths_of_primerTree_output",  out, Metabarcode_name)
-  
+  save_output_as_csv(taxonomized_results_table,
+                      "_primerTree_output_with_taxonomy", out,
+                      Metabarcode_name)
+  save_output_as_csv(filtered_results_table, "_raw_primerTree_output", out,
+                      Metabarcode_name)
+
   #return if you're supposed to
   if (return_table) {
     return(to_be_blasted_entries)
