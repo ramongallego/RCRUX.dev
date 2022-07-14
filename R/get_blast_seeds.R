@@ -68,18 +68,18 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
     taxonomized_results_table <-
       get_taxonomizr_from_accession(filtered_results_table, accessionTaxa)
 
-  # save output
-  save_output_as_csv(taxonomized_results_table,
-                      "_primerTree_output_with_taxonomy", out,
-                      Metabarcode_name)
-  save_output_as_csv(filtered_results_table, "_raw_primerTree_output", out,
-                      Metabarcode_name)
+    # save output
+    save_output_as_csv(taxonomized_results_table,
+                        "_primerTree_output_with_taxonomy", out,
+                        Metabarcode_name)
+    save_output_as_csv(filtered_results_table, "_raw_primerTree_output", out,
+                        Metabarcode_name)
 
-  #return if you're supposed to
-  if (return_table) {
-    return(to_be_blasted_entries)
-  }
-  else {
-    return(NULL)
-  }
+    #return if you're supposed to
+    if (return_table) {
+      return(to_be_blasted_entries)
+    }
+    else {
+      return(NULL)
+    }
 }
