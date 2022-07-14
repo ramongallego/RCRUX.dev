@@ -4,7 +4,7 @@
 #' @param accessionTaxa_path the path to an accessionTaxa sql
 #' @return the data.frame with taxonomy data
 #' @export
-get_taxonomizer_from_accession <- function(input, accessionTaxa_path) {
+get_taxonomizr_from_accession <- function(input, accessionTaxa_path) {
     input_taxids <- taxonomizr::accessionToTaxa(input$accession,
                                             accessionTaxa_path)
 

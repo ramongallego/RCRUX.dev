@@ -3,8 +3,26 @@
 #'        or by iterative_primer_search
 #' @return a data.table with problematic rows removed
 #' @export
-filter_primer_hits <- function(hits_table) {
+filter_primer_hits <- function(hits_table, mismatch, minimum_length, maximum_length) {
     # filter like get_blast_seeds used to
-    output <- hits_table[!(accession == "")]
-    
+    output <- hits_table[!(accession == " ")]
+    output <- output %>%
+        dplyr::filter(mismatch_forward <= mismatch) %>%
+        dplyr::filter(mismatch_reverse <= mismatch) %>%
+        dplyr::filter(product_length >= minimum_length) %>%
+        dplyr::filter(product_length <= maximum_length)
+
+    # Add amplicon_length column
+    output <- output %>%
+        dplyr::mutate(amplicon_length = product_length - nchar(forward_primer)
+                        - nchar(reverse_primer)) %>%
+        dplyr::arrange(species) %>%
+        dplyr::arrange(genus) %>%
+        dplyr::arrange(family)  %>%
+        dplyr::arrange(order) %>%
+        dplyr::arrange(class) %>%
+        dplyr::arrange(phylum) %>%
+        dplyr::arrange(superkingdom)
 }
+
+`%>%` <- magrittr::`%>%`
