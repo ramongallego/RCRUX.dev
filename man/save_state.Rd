@@ -16,7 +16,8 @@ save_state(dir, output_table, unsampled_indices, too_many_ns, not_in_db)
 \item{too_many_ns}{a vector of indices that result
 in a fasta with too many Ns}
 
-\item{not_in_db}{}
+\item{not_in_db}{a vector of indices not found in the local
+database}
 }
 \description{
 Helper function to save the state of a running blast search

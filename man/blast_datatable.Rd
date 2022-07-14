@@ -40,6 +40,6 @@ RCRUX.dev::get_blast_seeds(), use blastdbcmd to convert entries into
 fasta files, then uses blastn to query ncbi databases for those
 sequences. It compiles the results of blastn into a data.frame that it
 returns.
-Additionally, t saves its state as text files in a specified directory with
+Additionally, it saves its state as text files in a specified directory with
 each iteration.
 }

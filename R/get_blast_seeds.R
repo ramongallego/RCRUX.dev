@@ -63,10 +63,6 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
     output_table <-
       get_taxonomizr_from_accession(filtered_results_table, accessionTaxa)
 
-  # Make the directory to put everything in
-  # This should happen closer to the top
-  Metabarcode_name = Metabarcode_name
-
   # save output
   save_output_as_csv(to_be_blasted_entries, "_primerTree_output_with_taxonomy", out, Metabarcode_name)
   make_hist_save_pdf(primer_search_blast_out$product_length, "_pre_filter_product_lengths_of_primerTree_output",  out, Metabarcode_name)
@@ -74,7 +70,7 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
   make_hist_save_pdf(bla$product_length, "_post_filter_product_lengths_of_primerTree_output",  out, Metabarcode_name)
   
   #return if you're supposed to
-  if(return_table) {
+  if (return_table) {
     return(to_be_blasted_entries)
   }
   else {
