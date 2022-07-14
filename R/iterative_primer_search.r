@@ -63,6 +63,8 @@ iterative_primer_search <- function(forward, reverse, organisms,
                         # Why not initialize it as an empty data.table?
                         # This is a hedge against parse_primer_hits
                         # changing the output format
+                        # So this doesn't really work because is.na is done on a
+                        # Whole vector rather than on the object as a whole
                         if (is.na(output)) {
                             output <- parsed
                         }

@@ -5,9 +5,10 @@
 #'        mismatch_forward and mismatch_reverse columns
 #' @return a data.table with problematic rows removed
 #' @export
-filter_primer_hits <- function(hits_table, mismatch, minimum_length,
-                                maximum_length) {
+filter_primer_hits <- function(hits_table, mismatch = 3, minimum_length = 5,
+                                maximum_length = 500) {
     # filter like get_blast_seeds used to
+    data.table::setDT(hits_table)
     output <- hits_table[!(accession == " ")]
     output <- output %>%
         dplyr::filter(mismatch_forward <= mismatch) %>%
@@ -16,6 +17,10 @@ filter_primer_hits <- function(hits_table, mismatch, minimum_length,
         dplyr::filter(product_length <= maximum_length)
 
     # Add amplicon_length column
+    # This needs to know the size of the forward and reverse primers
+    # That means we either need to pass the forward and reverse primers
+    # to this function or we need to pass their lengths here
+    # Or maybe that is supposed to happen in another function?
     output <- output %>%
         dplyr::mutate(amplicon_length = product_length - nchar(forward_primer)
                         - nchar(reverse_primer))
