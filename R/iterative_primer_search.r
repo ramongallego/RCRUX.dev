@@ -58,18 +58,15 @@ iterative_primer_search <- function(forward, reverse, organisms,
                         data.table::setDT(parsed)
                         parsed <- dplyr::mutate(parsed, database = db)
 
-                        # NA is the case
-                        # where it has not really been initialized
+                        # It should only not be a data.frame when nothing has been added yet
                         # Why not initialize it as an empty data.table?
                         # This is a hedge against parse_primer_hits
                         # changing the output format
-                        # So this doesn't really work because is.na is done on a
-                        # Whole vector rather than on the object as a whole
-                        if (is.na(output)) {
-                            output <- parsed
+                        if (is.data.frame(output)) {
+                            output <- tibble::add_row(output, parsed)
                         }
                         else {
-                            output <- tibble::add_row(output, parsed)
+                            output <- parsed
                         }
                     }
                 }
