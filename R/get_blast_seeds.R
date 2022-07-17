@@ -64,9 +64,9 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
       stop("Primer search returned no hits.")
     }
 
-    filtered_results_table <- filter_primer_hits(results_table)
     taxonomized_results_table <-
       get_taxonomizr_from_accession(filtered_results_table, accessionTaxa)
+    filtered_results_table <- filter_primer_hits(results_table)
 
     # save output
     save_output_as_csv(taxonomized_results_table,
