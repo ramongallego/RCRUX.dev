@@ -58,7 +58,8 @@ iterative_primer_search <- function(forward, reverse, organisms,
                         data.table::setDT(parsed)
                         parsed <- dplyr::mutate(parsed, database = db)
 
-                        # It should only not be a data.frame when nothing has been added yet
+                        # It should only not be a data.frame
+                        # when nothing has been added yet
                         # Why not initialize it as an empty data.table?
                         # This is a hedge against parse_primer_hits
                         # changing the output format
