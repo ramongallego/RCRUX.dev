@@ -9,7 +9,7 @@ filter_primer_hits <- function(hits_table, mismatch = 3, minimum_length = 5,
                                 maximum_length = 500) {
     # filter like get_blast_seeds used to
     data.table::setDT(hits_table)
-    output <- hits_table[!(accession == " ")]
+    output <- dplyr::filter(!(accession == " "))
     output <- output %>%
         dplyr::filter(mismatch_forward <= mismatch) %>%
         dplyr::filter(mismatch_reverse <= mismatch) %>%
