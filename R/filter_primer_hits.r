@@ -5,7 +5,8 @@
 #'        mismatch_forward and mismatch_reverse columns
 #' @return a data.table with problematic rows removed
 #' @export
-filter_primer_hits <- function(hits_table, mismatch = 3, minimum_length = 5,
+filter_primer_hits <- function(hits_table, forward_primer, reverse_primer,
+                                mismatch = 3, minimum_length = 5,
                                 maximum_length = 500) {
     # filter like get_blast_seeds used to
     output <- dplyr::filter(hits_table, !(accession == " "))
