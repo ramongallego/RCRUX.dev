@@ -75,6 +75,15 @@ iterative_primer_search <- function(forward, reverse, organisms,
         }
     }
 
+    # Check if we got anything
+    # We want it to stop because not finding anything is a problem for anything
+    # that depends on it finding something and it is more helpful to simply
+    # fail than return an empty data.frame that code down the line will need to
+    # figure out how to deal with
+    if(!is.data.frame(output)) {
+        stop("Did not find any matches")
+    }
+
     # remove duplicate rows
     output <- dplyr::distinct(output)
     return(output)
