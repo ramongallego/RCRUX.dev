@@ -67,7 +67,13 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         for (index in sample_indices) {
             fasta <- run_blastdbcmd(blast_seeds[index, ], db_dir)
             # Maybe in these cases we can just append directly to output?
-            if (nchar(fasta) == 0) {
+
+            # So this is somewhat atrocious. Why do we do it this way?
+            # Well, in cases where the command has a non-0 exit status,
+            # system2 sometimes (always?) returns a character vector of length 0
+            # This causes an error because there are no characters to check, so
+            # the if has nothing to operate on. This kludgey `or` fixes that.
+            if (length(fasta) == 0 || nchar(fasta) == 0) {
                 append(not_in_db, index)
             }
             else if (length(grep(wildcards, fasta)) > 0) {
