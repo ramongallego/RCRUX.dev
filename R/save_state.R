@@ -11,7 +11,7 @@
 #' @export
 save_state <- function(dir, output_table, unsampled_indices, too_many_ns,
                         not_in_db) {
-    save_dir <- paste0(dir, "rcrux_blast_data/")
+    save_dir <- paste0(dir, "/rcrux_blast_data/")
     if (!dir.exists(save_dir)) {
         dir.create(save_dir)
     }

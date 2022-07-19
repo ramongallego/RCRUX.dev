@@ -96,6 +96,6 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
 
     # If we get a taxid from blastn can we just use that?
     output_table_taxonomy <-
-        get_taxonomizer_from_accession(output_table, accession_taxa_path)
+        get_taxonomizr_from_accession(output_table, accession_taxa_path)
     return(output_table_taxonomy)
 }

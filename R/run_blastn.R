@@ -27,7 +27,7 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
     cores <- parallel::detectCores()
 
     # System call
-    if(is.null(ncbi_bin)) {
+    if (is.null(ncbi_bin)) {
         blastn_output <- system2(command = "blastn", 
                                     args = c("-db", db_dir,
                                     "-query", temp,
@@ -46,12 +46,12 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
     # Maybe just look for a "/" on the end?
     else {
         blastn <- paste(ncbi_bin, "blastn", "/")
-        blastn_output <- system2(command = blastn, 
+        blastn_output <- system2(command = blastn,
                                     args = c("-db", db_dir,
                                     "-query", temp,
-                                    "-outfmt", paste("6", "saccver", "length",
+                                    "-outfmt", paste("\"6", "saccver", "length",
                                         "pident", "qacc", "slen", "sstart",
-                                        "send", "sseq", "evalue", "staxids"),
+                                        "send", "sseq", "evalue", "staxids\""),
                                     "-evalue", evalue,
                                     "-num_alignments", align,
                                     "-qcov_hsp_perc", coverage,
@@ -66,7 +66,7 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
                         "amplicon_length",
                         "pident",
                         "query_accession",
-                        "accession_sequence_length", 
+                        "accession_sequence_length",
                         "amplicon_start",
                         "amplicon_stop",
                         "sequence",
