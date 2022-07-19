@@ -16,6 +16,7 @@
 rcrux_blast <- function(seeds_path, save_dir, db_dir, accession_taxa_path,
                         expand_vectors = TRUE, ...) {
     output_dir <- paste(save_dir, "rcrux_blast_output", sep = "/")
+    dir.create(save_dir)
     dir.create(output_dir)
     blast_seeds <- read.csv(seeds_path)
     output_table <- blast_datatable(blast_seeds, save_dir, db_dir,
