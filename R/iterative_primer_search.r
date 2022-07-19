@@ -18,7 +18,7 @@
 #' @export
 iterative_primer_search <- function(forward, reverse, organisms,
                                     databases = "nt", ...) {
-    output <- NA
+    output <- NULL
     # Use for loops to iterate over all the vector options
     for (org in organisms) {
         for (db in databases) {
@@ -63,11 +63,11 @@ iterative_primer_search <- function(forward, reverse, organisms,
                         # Why not initialize it as an empty data.table?
                         # This is a hedge against parse_primer_hits
                         # changing the output format
-                        if (is.data.frame(output)) {
-                            output <- tibble::add_row(output, parsed)
+                        if (is.null(output)) {
+                            output <- parsed
                         }
                         else {
-                            output <- parsed
+                            output <- tibble::add_row(output, parsed)
                         }
                     }
                 }
@@ -80,8 +80,9 @@ iterative_primer_search <- function(forward, reverse, organisms,
     # that depends on it finding something and it is more helpful to simply
     # fail than return an empty data.frame that code down the line will need to
     # figure out how to deal with
-    if(!is.data.frame(output)) {
-        stop("Did not find any matches")
+    if (!is.data.frame(output)) {
+        stop("Output is not a data.frame\n
+            Hint: your searches may not have returned any results.")
     }
 
     # remove duplicate rows

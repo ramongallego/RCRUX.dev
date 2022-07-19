@@ -21,19 +21,8 @@ filter_primer_hits <- function(hits_table, forward_primer, reverse_primer,
     # That means we either need to pass the forward and reverse primers
     # to this function or we need to pass their lengths here
     # Or maybe that is supposed to happen in another function?
-    output <- output %>%
-        dplyr::mutate(amplicon_length = product_length - nchar(forward_primer)
-                        - nchar(reverse_primer))
-
-    # Arrange by taxonomy
-    output <- output %>%
-        dplyr::arrange(species) %>%
-        dplyr::arrange(genus) %>%
-        dplyr::arrange(family)  %>%
-        dplyr::arrange(order) %>%
-        dplyr::arrange(class) %>%
-        dplyr::arrange(phylum) %>%
-        dplyr::arrange(superkingdom)
+    output <- dplyr::mutate(output, amplicon_length = product_length -
+                            nchar(forward_primer) - nchar(reverse_primer))
 }
 
 `%>%` <- magrittr::`%>%`

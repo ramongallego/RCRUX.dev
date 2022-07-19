@@ -4,7 +4,8 @@
 #' @param accessionTaxa_path the path to an accessionTaxa sql
 #' @return the data.frame with taxonomy data
 #' @export
-get_taxonomizr_from_accession <- function(input, accessionTaxa_path) {
+get_taxonomizr_from_accession <- function(input, accessionTaxa_path,
+                                        organize = TRUE) {
     input_taxids <- taxonomizr::accessionToTaxa(input$accession,
                                             accessionTaxa_path)
 
@@ -17,9 +18,19 @@ get_taxonomizr_from_accession <- function(input, accessionTaxa_path) {
                                 "subspecies", "subgenus", "species group",
                                 "parvorder", "varietas"))
 
-    output <- dplyr::mutate(input, taxid = input_taxids, data.frame(input_taxonomy))
+    output <-
+        dplyr::mutate(input, taxid = input_taxids, data.frame(input_taxonomy))
 
-    # Use mutate to add colummns because it already (correctly) assumed that
-    # that stuff would be in the right order and mutate uses memory well.
+    if (organize) {
+        # Arrange by taxonomy
+        output <- output %>%
+            dplyr::arrange(species) %>%
+            dplyr::arrange(genus) %>%
+            dplyr::arrange(family)  %>%
+            dplyr::arrange(order) %>%
+            dplyr::arrange(class) %>%
+            dplyr::arrange(phylum) %>%
+            dplyr::arrange(superkingdom)
+    }
     return(output)
 }
