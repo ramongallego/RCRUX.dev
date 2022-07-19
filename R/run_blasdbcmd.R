@@ -11,7 +11,7 @@
 run_blastdbcmd <- function(query_row, db_dir, ncbi_bin = NULL) {
     # Extract arguments
     accession <- query_row$accession
-    db <- query_row$database_used_for_blast
+    db <- query_row$database
     if (db ==  "refseq_representative_genomes") {
         if (query_row$superkingdom == "Eukaryota") {
             db <- "ref_euk_rep_genomes"
