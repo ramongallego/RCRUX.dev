@@ -56,26 +56,25 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
 
     # Aggregate the primer_search return values
     # Then parse_primer_hits all of them
-    results_table <- iterative_primer_search(forward_primer, reverse_primer,
+    raw_table <- iterative_primer_search(forward_primer, reverse_primer,
                                             organism,
                                             primer_specificity_database, ...)
     # Throw an error if there are no results
-    if (nrow(results_table) < 1) {
+    if (nrow(raw_table) < 1) {
       stop("Primer search returned no hits.")
     }
 
-    taxonomized_results_table <-
-      get_taxonomizr_from_accession(results_table, accessionTaxa)
-    filtered_results_table <- filter_primer_hits(taxonomized_results_table,
+    filtered_results_table <- filter_primer_hits(raw_table,
                                                 forward_primer, reverse_primer,
                                                 mismatch, minimum_length,
                                                 maximum_length)
+    taxonomized_results_table <- get_taxonomizr_from_accession(filtered_results_table, accessionTaxa)
 
     # save output
     save_output_as_csv(taxonomized_results_table,
                         "_primerTree_output_with_taxonomy", out,
                         Metabarcode_name)
-    save_output_as_csv(filtered_results_table, "_raw_primerTree_output", out,
+    save_output_as_csv(raw_table, "_raw_primerTree_output", out,
                         Metabarcode_name)
 
     #return if you're supposed to
