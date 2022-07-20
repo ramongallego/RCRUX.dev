@@ -64,14 +64,15 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
       stop("Primer search returned no hits.")
     }
 
-    filtered_results_table <- filter_primer_hits(raw_table,
+    filtered_table <- filter_primer_hits(raw_table,
                                                 forward_primer, reverse_primer,
                                                 mismatch, minimum_length,
                                                 maximum_length)
-    taxonomized_results_table <- get_taxonomizr_from_accession(filtered_results_table, accessionTaxa)
+    taxonomized_table <- get_taxonomizr_from_accession(filtered_table,
+                                                        accessionTaxa)
 
     # save output
-    save_output_as_csv(taxonomized_results_table,
+    save_output_as_csv(taxonomized_table,
                         "_primerTree_output_with_taxonomy", out,
                         Metabarcode_name)
     save_output_as_csv(raw_table, "_raw_primerTree_output", out,
@@ -79,7 +80,7 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
 
     #return if you're supposed to
     if (return_table) {
-      return(taxonomized_results_table)
+      return(taxonomized_table)
     }
     else {
       return(NULL)
