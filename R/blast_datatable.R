@@ -85,7 +85,10 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         }
 
         # run blastn and aggregate results
-        blastn_output <- run_blastn(aggregate_fasta, db_dir)
+        # This is a temporary fixy for the fact that blasting things in multiple
+        # dbs at once is nonsensical
+        kludge <- paste(db_dir, "nt", sep = "/")
+        blastn_output <- run_blastn(aggregate_fasta, kludge)
         output_table <- tibble::add_row(output_table, blastn_output)
 
         # save the state of the blast
