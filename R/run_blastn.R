@@ -61,6 +61,8 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
                                     stdout = TRUE)
     }
 
+    file.remove(temp)
+
     # Format output
     column_names <-  c("accession",
                         "amplicon_length",
