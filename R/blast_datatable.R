@@ -63,7 +63,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
 
         # run blastdbcmd on each
         # sort results into appropriate buckets
-        aggregate_fasta <- ""
+        aggregate_fasta <- c()
         for (index in sample_indices) {
             fasta <- run_blastdbcmd(blast_seeds[index, ], db_dir)
             # Maybe in these cases we can just append directly to output?
@@ -80,7 +80,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
                 append(too_many_ns, index)
             }
             else {
-                aggregate_fasta <- paste(aggregate_fasta, fasta, sep = "\n")
+                aggregate_fasta <- append(aggregate_fasta, fasta)
             }
         }
 
