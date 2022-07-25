@@ -23,18 +23,7 @@
 #' @export
 blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
                             sample_size = 1000, wildcards = "NNNN") {
-    output_table <- data.frame(matrix(ncol = 10, nrow = 0))
-    # Will need extra column for "issues" if we go that route
-    colnames(output_table) <-  c("accession",
-                                "amplicon_length",
-                                "pident",
-                                "query_accession",
-                                "accession_sequence_length", 
-                                "amplicon_start",
-                                "amplicon_stop",
-                                "sequence",
-                                "evalue",
-                                "BLAST_db_taxids")
+    output_table <- NULL
 
     # Default values for tracker variables
     num_rounds <- 0
@@ -85,11 +74,16 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         }
 
         # run blastn and aggregate results
-        # This is a temporary fixy for the fact that blasting things in multiple
+        # This is a temporary fix for the fact that blasting things in multiple
         # dbs at once is nonsensical
         kludge <- paste(db_dir, "nt", sep = "/")
         blastn_output <- run_blastn(aggregate_fasta, kludge)
-        output_table <- tibble::add_row(output_table, blastn_output)
+        if (is.null(output_table)) {
+            output_table <- blastn_output
+        }
+        else {
+            output_table <- tibble::add_row(output_table, blastn_output)
+        }
 
         # save the state of the blast
         num_rounds <- num_rounds + 1
