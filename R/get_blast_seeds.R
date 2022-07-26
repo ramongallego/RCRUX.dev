@@ -48,11 +48,12 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
                             return_table = TRUE) {
 
     # Start by making the directory and checking for the sql and whatnot.
-    dir.create(file.path(paste0(file_out_dir, Metabarcode_name)))
+    out <- paste0(file_out_dir, Metabarcode_name, "/")
+    dir.create(file_out_dir)
+    dir.create(out)
     if (!file.exists(accessionTaxa)) {
       stop("accessionTaxa does not exist")
     }
-    out <- paste0(file_out_dir, Metabarcode_name, "/")
 
     # Aggregate the primer_search return values
     # Then parse_primer_hits all of them
