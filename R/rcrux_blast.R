@@ -15,8 +15,8 @@
 #' @export
 rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
                         expand_vectors = TRUE, ...) {
-    output_dir <- paste(working_dir, "rcrux_blast_output", sep = "/")
-    save_dir <- paste(working_dir, ".rcrux_blast_save", sep = "/")
+    output_dir <- paste(working_dir, "rcrux_blast_output/", sep = "/")
+    save_dir <- paste(working_dir, ".rcrux_blast_save/", sep = "/")
     dir.create(working_dir)
     dir.create(save_dir)
     dir.create(output_dir)
