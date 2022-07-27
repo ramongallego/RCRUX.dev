@@ -5,17 +5,18 @@
 #' then writes the output.
 #'
 #' @param seeds_path a path to a csv from get_blast_seeds
-#' @param save_dir a directory, passed to blast_datatable for it to save to
 #' @param db_dir a directory containing a blast-formatted database
-#' @param expand_vectors logical, determines whether to expand too_many_Ns
-#'        and not_in db into real tables
 #' @param accession_taxa_path a path to the accessionTaxa sql created by
 #'        taxonomizr
+#' @param working_dir a directory in which to save partial and complete output
+#' @param expand_vectors logical, determines whether to expand too_many_Ns
+#'        and not_in db into real tables
 #' @return NULL
 #' @export
-rcrux_blast <- function(seeds_path, save_dir, db_dir, accession_taxa_path,
+rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
                         expand_vectors = TRUE, ...) {
-    output_dir <- paste(save_dir, "rcrux_blast_output", sep = "/")
+    output_dir <- paste(working_dir, "rcrux_blast_output", sep = "/")
+    save_dir <- paste(working_dir, ".rcrux_blast_save", sep = "/")
     dir.create(save_dir)
     dir.create(output_dir)
     blast_seeds <- read.csv(seeds_path)
