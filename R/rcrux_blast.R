@@ -17,14 +17,17 @@ rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
                         expand_vectors = TRUE, ...) {
     output_dir <- paste(working_dir, "rcrux_blast_output", sep = "/")
     save_dir <- paste(working_dir, ".rcrux_blast_save", sep = "/")
+    dir.create(working_dir)
     dir.create(save_dir)
     dir.create(output_dir)
     blast_seeds <- read.csv(seeds_path)
     output_table <- blast_datatable(blast_seeds, save_dir, db_dir,
                     accession_taxa_path, ...)
+
     # Write output_table to dir/rcrux_blast_output/summary.csv
     summary_csv_path <- paste(output_dir, "summary.csv", sep = "/")
     write.csv(output_table, file = summary_csv_path)
+
     # Read condensed vectors and expand them
     if (expand_vectors) {
         too_many_ns_path <- paste(save_dir, "too_many_ns.txt", sep = "/")
