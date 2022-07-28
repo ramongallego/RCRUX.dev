@@ -63,10 +63,10 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
             # This causes an error because there are no characters to check, so
             # the if has nothing to operate on. This kludgey `or` fixes that.
             if (length(fasta) == 0 || nchar(fasta) == 0) {
-                append(not_in_db, index)
+                not_in_db <- append(not_in_db, index)
             }
             else if (length(grep(wildcards, fasta)) > 0) {
-                append(too_many_ns, index)
+                too_many_ns <- append(too_many_ns, index)
             }
             else {
                 aggregate_fasta <- append(aggregate_fasta, fasta)
