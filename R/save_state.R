@@ -16,7 +16,7 @@ save_state <- function(save_dir, output_table, unsampled_indices, too_many_ns,
     }
     write.table(output_table, file = paste0(save_dir,
                         "output_table.txt"), row.names = FALSE, sep = ",")
-    write(unsampled_indices, file = paste0(save_dir, "unsampled_indices.txt"))
-    write(too_many_ns, file = paste0(save_dir, "too_many_ns.txt"))
-    write(not_in_db, file = paste0(save_dir, "not_in_db.txt"))
+    write(unsampled_indices, file = paste(save_dir, "unsampled_indices.txt"), sep = "/")
+    write(too_many_ns, file = paste(save_dir, "too_many_ns.txt"), sep = "/")
+    write(not_in_db, file = paste(save_dir, "not_in_db.txt"), sep = "/")
 }
