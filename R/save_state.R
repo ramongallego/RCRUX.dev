@@ -7,6 +7,7 @@
 #'        in a fasta with too many Ns
 #' @param not_in_db a vector of indices not found in the local
 #'        database
+#' @param num_rounds the number of rounds so far
 #' @return NULL
 #' @export
 save_state <- function(save_dir, output_table, unsampled_indices, too_many_ns,
