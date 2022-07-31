@@ -10,7 +10,7 @@
 #' @return NULL
 #' @export
 save_state <- function(save_dir, output_table, unsampled_indices, too_many_ns,
-                        not_in_db) {
+                        not_in_db, num_rounds) {
     if (!dir.exists(save_dir)) {
         dir.create(save_dir)
     }
@@ -19,4 +19,5 @@ save_state <- function(save_dir, output_table, unsampled_indices, too_many_ns,
     write(unsampled_indices, file = paste(save_dir, "unsampled_indices.txt", sep = "/"), sep = "/")
     write(too_many_ns, file = paste(save_dir, "too_many_ns.txt", sep = "/"), sep = "/")
     write(not_in_db, file = paste(save_dir, "not_in_db.txt", sep = "/"))
+    write(not_in_db, file = paste(save_dir, "num_rounds.txt", sep = "/"))
 }
