@@ -6,6 +6,9 @@
 #' @export
 get_taxonomizr_from_accession <- function(input, accessionTaxa_path,
                                         organize = TRUE) {
+    if (!"accession" %in% colnames(input)) {
+        stop("No `accession` column in input.")
+    }
     input_taxids <- taxonomizr::accessionToTaxa(input$accession,
                                             accessionTaxa_path)
 

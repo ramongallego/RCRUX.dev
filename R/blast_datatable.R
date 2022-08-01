@@ -37,7 +37,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         rounds_path <- paste(save_dir, "num_rounds.txt", sep = "/")
         num_rounds <- as.numeric(readLines(con = rounds_path))
 
-        ns_path <- paste(save_dir, "too_many_Ns.txt", sep = "/")
+        ns_path <- paste(save_dir, "too_many_ns.txt", sep = "/")
         too_many_ns <- as.numeric(readLines(con = ns_path))
 
         not_in_db_path <- paste(save_dir, "not_in_db.txt", sep = "/")
