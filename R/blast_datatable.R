@@ -43,7 +43,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         not_in_db_path <- paste(save_dir, "not_in_db.txt", sep = "/")
         not_in_db <- as.numeric(readLines(con = not_in_db_path))
 
-        output_table_path <- paste(save_dir, "output_table.txt")
+        output_table_path <- paste(save_dir, "output_table.txt", sep = "/")
         output_table <- read.csv(output_table_path)
     }
 
