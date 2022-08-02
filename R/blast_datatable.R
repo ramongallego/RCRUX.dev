@@ -23,13 +23,13 @@
 #' @export
 blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
                             sample_size = 1000, wildcards = "NNNN") {
-    output_table <- NULL
 
     # Default values for tracker variables
     num_rounds <- 0
     too_many_ns <- c()
     not_in_db <- c()
     unsampled_indices <- c(seq_len(nrow(blast_seeds)))
+    output_table <- NULL
 
     # Pick up where it left off
     # This needs to add rcrux_blast_data onto the path
@@ -41,6 +41,9 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         too_many_ns <- as.numeric(readLines(con = ns_path))
 
         not_in_db_path <- paste(save_dir, "not_in_db.txt", sep = "/")
+        not_in_db <- as.numeric(readLines(con = not_in_db_path))
+
+        unsampled_indices_path <- paste(save_dir, "not_in_db.txt", sep = "/")
         not_in_db <- as.numeric(readLines(con = not_in_db_path))
 
         output_table_path <- paste(save_dir, "output_table.txt", sep = "/")
