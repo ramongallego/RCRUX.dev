@@ -15,10 +15,13 @@ save_state <- function(save_dir, output_table, unsampled_indices, too_many_ns,
     if (!dir.exists(save_dir)) {
         dir.create(save_dir)
     }
-    write.table(output_table, file = paste(save_dir,
-                        "output_table.txt", sep = "/"), row.names = FALSE, sep = ",")
-    write(unsampled_indices, file = paste(save_dir, "unsampled_indices.txt", sep = "/"), sep = "/")
-    write(too_many_ns, file = paste(save_dir, "too_many_ns.txt", sep = "/"), sep = "/")
-    write(not_in_db, file = paste(save_dir, "not_in_db.txt", sep = "/"))
-    write(num_rounds, file = paste(save_dir, "num_rounds.txt", sep = "/"))
+    write.table(output_table,
+                file = paste(save_dir, "output_table.txt", sep = "/"),
+                row.names = FALSE, sep = ",")
+    writeLines(unsampled_indices,
+                con = paste(save_dir, "unsampled_indices.txt", sep = "/"))
+    writeLines(too_many_ns,
+                con = paste(save_dir, "too_many_ns.txt", sep = "/"))
+    writeLines(not_in_db, con = paste(save_dir, "not_in_db.txt", sep = "/"))
+    writeLines(num_rounds, con = paste(save_dir, "num_rounds.txt", sep = "/"))
 }
