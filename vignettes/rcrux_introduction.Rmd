@@ -1,0 +1,83 @@
+---
+title: "Introduction to RCRUX"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to RCRUX}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(RCRUX.dev)
+```
+
+RCRUX is a suite of tools for querying NCBI databases and filtering and formatting the resulting data. The typical data pipeline involves using [RCRUX.dev::get_blast_seeds()] to download and wrangle results from NCBI's primer BLAST tool, then using [RCRUX.dev::rcrux_blast()] to search a local NCBI database for matches.
+
+# Example pipeline
+
+The following example shows a simple RCRUX pipeline from start to finish. Note that this example would take a lot of storage, time, and system resources to execute.
+
+```
+seeds_path <- "/my/directory"
+accession_path <- "/my/accession.sql"
+blastdb_path <- "/my/local/database/nt"
+
+get_blast_seeds("TAGAACAGGCTCCTCTAG", "TTAGATACCCCACTATGC",
+                 blast_seeds_parent, "12S_V5F1", accession_path,
+                 organism = c("7776", "7777"), return_table = FALSE)
+
+# A .csv is automatically created at this path based on the arguments
+# passed to get_blast_seeds
+csv_path <- "/my/directory/12S_V5F1/12S_V5F1_primerTree_output_with_taxonomy.csv"
+
+rcrux_blast(csv_path, "blast_test_save", db_path, accession_taxa_path)
+```
+
+This script takes a forward and reverse primer sequence and generates a csv with data about matches found in NCBI's nt database for further analysis.
+
+# Installation
+
+RCRUX can be installed using the following R code:
+
+```
+devtools::install_github("LunaGal/RCRUX.dev")
+```
+
+RCRUX requires several local files in addition to the package itself.
+
+## BLAST+
+
+NCBI's BLAST+ suite must be locally installed. NCBI provides installation instructions for [Windows](https://www.ncbi.nlm.nih.gov/books/NBK52637/), [Linux](https://www.ncbi.nlm.nih.gov/books/NBK52640/), and [Mac OS](https://www.ncbi.nlm.nih.gov/books/NBK569861/). Additionally, it is available in the Debian archives as ncbi-blast+ and as a homebrew formula called blast.
+
+## Blast-formatted database
+
+RCRUX requires a local blast-formatted database. NCBI provides a tool for downloading databases as part of the blast+ package. A brief help page can be found [here](https://www.ncbi.nlm.nih.gov/books/NBK569850/).
+
+## Taxonomizr
+
+RCRUX uses the taxonomizr package. taxonomizr requires a local sqlite database and provides [taxonomizr::prepareDatabase()] to automatically build the local database. Many RCRUX functions require a path to a taxonomizr database, so you should run prepareDatabase before running RCRUX functions.
+
+# get_blast_seeds
+
+[RCRUX.dev::get_blast_seeds] uses modified versions of functions from the primerTree package to submit queries to NCBI's primer BLAST tool, then aggregates results into a single data.frame. primer_search expands degenerate primers into each possible non-degenerate primer and submits a query for each. get_blast_seeds further multiplies the number of queries by allowing the user to query the primers for each organism in a vector. get_blast_seeds collects all these results from primer_search, filters them based on product length, and adds taxonomic data using the taxonomizr package.
+
+## Additional arguments
+
+[NCBI's primer BLAST tool](https://www.ncbi.nlm.nih.gov/tools/primer-blast/) supports many fields for modifying and refining a query.
+
+## Example
+
+# rcrux_blast
+
+## Internal data pipeline
+
+## Resuming from save files
+
+## Example

@@ -4,7 +4,7 @@
 \alias{get_taxonomizr_from_accession}
 \title{Attach taxonomy data to an input table}
 \usage{
-get_taxonomizr_from_accession(input, accessionTaxa_path)
+get_taxonomizr_from_accession(input, accessionTaxa_path, organize = TRUE)
 }
 \arguments{
 \item{input}{a data.frame}

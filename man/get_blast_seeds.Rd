@@ -59,7 +59,7 @@ to NCBI}
 \item{...}{additional arguments passed to primer_search, which passes it to
 NCBI}
 
-\item{num_permutations}{passed to primer_search, which passes it to NCBI}
+\item{num_permutations}{passed to primer_search}
 
 \item{hitsize}{passed to primer_search, which passes it to NCBI}
 

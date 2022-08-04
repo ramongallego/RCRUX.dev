@@ -6,6 +6,8 @@
 \usage{
 filter_primer_hits(
   hits_table,
+  forward_primer,
+  reverse_primer,
   mismatch = 3,
   minimum_length = 5,
   maximum_length = 500

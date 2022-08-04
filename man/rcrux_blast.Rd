@@ -6,9 +6,9 @@
 \usage{
 rcrux_blast(
   seeds_path,
-  save_dir,
   db_dir,
   accession_taxa_path,
+  working_dir,
   expand_vectors = TRUE,
   ...
 )
@@ -16,12 +16,14 @@ rcrux_blast(
 \arguments{
 \item{seeds_path}{a path to a csv from get_blast_seeds}
 
-\item{save_dir}{a directory, passed to blast_datatable for it to save to}
-
-\item{db_dir}{a directory containing a blast-formatted database}
+\item{db_dir}{a directory containing a blast-formatted database. This should
+not be the path to the database as it appears in the blastn arguments
+(ie it should not have the name of the database trailing).}
 
 \item{accession_taxa_path}{a path to the accessionTaxa sql created by
 taxonomizr}
+
+\item{working_dir}{a directory in which to save partial and complete output}
 
 \item{expand_vectors}{logical, determines whether to expand too_many_Ns
 and not_in db into real tables}

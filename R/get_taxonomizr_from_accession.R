@@ -25,7 +25,8 @@ get_taxonomizr_from_accession <- function(input, accessionTaxa_path,
         dplyr::mutate(input, taxid = input_taxids, data.frame(input_taxonomy))
 
     if (!"species" %in% colnames(output)) {
-        stop("Failed to create column `species` in output. Hint: this may be caused by 0-row inputs.")
+        stop("Failed to create column `species` in output.
+            Hint: this may be caused by 0-row inputs.")
     }
 
     if (organize) {

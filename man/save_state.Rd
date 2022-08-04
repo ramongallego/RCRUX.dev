@@ -4,11 +4,16 @@
 \alias{save_state}
 \title{Helper function to save the state of a running blast search}
 \usage{
-save_state(dir, output_table, unsampled_indices, too_many_ns, not_in_db)
+save_state(
+  save_dir,
+  output_table,
+  unsampled_indices,
+  too_many_ns,
+  not_in_db,
+  num_rounds
+)
 }
 \arguments{
-\item{dir}{the directory to save in}
-
 \item{output_table}{the outputs generated so far}
 
 \item{unsampled_indices}{a vector of indices not yet sampled}
@@ -18,6 +23,10 @@ in a fasta with too many Ns}
 
 \item{not_in_db}{a vector of indices not found in the local
 database}
+
+\item{num_rounds}{the number of rounds so far}
+
+\item{dir}{the directory to save in}
 }
 \description{
 Helper function to save the state of a running blast search
