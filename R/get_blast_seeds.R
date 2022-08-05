@@ -1,5 +1,41 @@
-#' Function to query NCBI's primer_blast tool, append the taxonomy, and
-#' output the results as .csvs
+#' Query primer_blast and generate a .csv to use for rcrux_blast
+#'
+#' @ description
+#' get_blast_seeds uses a modified version of [primerTree:primer_search()] to
+#' query NCBI's [primer BLAST](https://www.ncbi.nlm.nih.gov/tools/primer-blast/)
+#' tool, filters the results, then aggregates them into a single data.frame.
+#' As a side effect, it creates a directory at `file_out_dir` if one doesn't yet
+#' exist, then creates a subdirectory inside `file_out_dir` named after
+#' `Metabarcode_name`. It creates two files inside that directory, one
+#' representing the output and the other representing the output without added
+#' taxonomy.
+#'
+#' # Additional arguments passed to primer BLAST
+#'
+#' get_blast_seeds passes many parameters to NCBI's primer blast tool. You can
+#' match the parameters to the fields available in the GUI here. First, use your
+#' browser to view the page source. Search for the field you are interested in
+#' by searching for the title of the field. It should be enclosed in a tag.
+#' Inside the label tag, it says for = "[name_of_parameter]". Copy the string
+#' after for = and add it to get_blast_seeds as the name of a parameter, setting
+#' it equal to whatever you like.
+#'
+#' Example: I want to set "Exon junction span" to 10. I open the source of the
+#' primer designing tool and look for that string. I find the following:
+#'
+#' ```
+#' <label class="m" for="PRIMER_ON_SPLICE_SITE">Exon junction span</label>
+#' ```
+#'
+#' I copy PRIMER_ON_SPLICE_SITE and add it to get_blast_seeds:
+#'
+#' ```
+#' get_blast_seeds("TAGAACAGGCTCCTCTAG", "TTAGATACCCCACTATGC",
+#'              blast_seeds_parent, "12S_V5F1", accession_taxa_path,
+#'              organism = c("7776"), MAX_TARGET_PER_TEMPLATE = 10,
+#'              PRIMER_ON_SPLICE_SITE = "10"
+#'              return_table = FALSE)
+#' ```
 #'
 #' @param forward_primer passed to primer_search, which turns it into a list of
 #'        each primer it could be based on its degenerate primers, then passes
@@ -8,12 +44,10 @@
 #'        each primer it could be based on its degenerate primers, then passes
 #'        each one in turn to NCBI
 #' @param file_out_dir the parent directory to place the data in.
-#'        get_blast_seeds does not attempt to create a new directory, so
-#'        file_out_dir should already exist
 #' @param Metabarcode_name used to name the subdirectory and the files. If a
 #'        directory named Metabarcode_name does not exist in file_out_dir, a
 #'        new directory will be created. get_blast_seeds appends
-#'        Metabarcode_name to the beginning of each of the four files it
+#'        Metabarcode_name to the beginning of each of the two files it
 #'        generates.
 #' @param accessionTaxa the path to sql created by taxonomizr
 #' @param organism a vector of character vectors. Each character vector is
@@ -37,7 +71,7 @@
 #'        NCBI
 #' @param ... additional arguments passed to primer_search, which passes it to
 #'        NCBI
-#' @return a tibble containing the same information as the csv it generates
+#' @return a data.frame containing the same information as the .csv it generates
 #' @export
 get_blast_seeds <- function(forward_primer, reverse_primer,
                             file_out_dir, Metabarcode_name,

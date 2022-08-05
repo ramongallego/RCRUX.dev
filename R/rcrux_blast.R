@@ -1,8 +1,9 @@
-#' A wrapper function for blast_datatable that reads a data.frame from a path
+#' wrapper function for blast_datatable that reads a data.frame from a path
 #'
-#' Reads a data.frame from path,
-#' then passes it to blast_datatable
-#' then writes the output.
+#' rcrux_ blast uses [RCRUX.dev::blast_datatable()] to search against a blast
+#' formatted database. It creates a directory at `working_dir` if one does not
+#' already exist and generates `rcrux_blast_output` and `.rcrux_blast_save`
+#' inside that directory.
 #'
 #' @param seeds_path a path to a csv from get_blast_seeds
 #' @param db_dir a directory containing a blast-formatted database. This should
