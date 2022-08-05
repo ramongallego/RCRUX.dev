@@ -3,7 +3,9 @@
 #' rcrux_ blast uses [RCRUX.dev::blast_datatable()] to search against a blast
 #' formatted database. It creates a directory at `working_dir` if one does not
 #' already exist and generates `rcrux_blast_output` and `.rcrux_blast_save`
-#' inside that directory.
+#' inside that directory. It passes `<working_dir>/.rcrux_blast_save` to
+#' [RCRUX.dev::blast_datatable()] as the save directory and generates files in
+#' `rcrux_blast_output` recording the results of the blast.
 #'
 #' @param seeds_path a path to a csv from get_blast_seeds
 #' @param db_dir a directory containing a blast-formatted database. This should

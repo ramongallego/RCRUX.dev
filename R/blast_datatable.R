@@ -1,12 +1,20 @@
 #' Take a datatable and return the results of BLASTing it
 #'
+#' @description
 #' Given a datatable with the column names of the datatable returned by
-#' RCRUX.dev::get_blast_seeds(), use blastdbcmd to convert entries into
+#' [RCRUX.dev::get_blast_seeds()], use blastdbcmd to convert entries into
 #' fasta files, then uses blastn to query ncbi databases for those
 #' sequences. It compiles the results of blastn into a data.frame that it
-#' returns.
-#' Additionally, it saves its state as text files in a specified directory with
-#' each iteration.
+#' returns. Additionally, it saves its state as text files in a specified
+#' directory with each iteration.
+#'
+#' @details
+#' blast_datatable uses blastdbcmd and blastn to find sequences. It samples rows
+#' from `blast_seeds` and uses blastdbcmd to find a seqence that corresponds to
+#' the accession number and forward and reverse stops recorded in the table.
+#' blastdbcmd outputs sequences as .fasta-formatted strings, which
+#' blast_datatable concatenates into a multi-line fasta, then passes to blastn
+#' as an argument. blast-datatable repeats this process until no rows remain.
 #'
 #' @param blast_seeds a data.frame formatted like the output from
 #'        get_blast_seeds_multi_taxa_or_db

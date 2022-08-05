@@ -21,7 +21,7 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
     # 2) It allows for easy changes if we ever figure out an elegant way to do
     # the handoff
     # Use tempfile() for this instead
-    write(fasta, file = temp)
+    writeLines(fasta, con = temp)
 
     # Determine arguments
     cores <- parallel::detectCores()
