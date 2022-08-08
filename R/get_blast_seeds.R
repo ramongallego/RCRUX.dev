@@ -1,7 +1,7 @@
 #' Query primer_blast and generate a .csv to use for rcrux_blast
 #'
-#' @ description
-#' get_blast_seeds uses a modified version of [primerTree:primer_search()] to
+#' @description
+#' get_blast_seeds uses a modified version of [primerTree::primer_search()] to
 #' query NCBI's [primer BLAST](https://www.ncbi.nlm.nih.gov/tools/primer-blast/)
 #' tool, filters the results, then aggregates them into a single data.frame.
 #' As a side effect, it creates a directory at `file_out_dir` if one doesn't yet
@@ -16,7 +16,7 @@
 #' match the parameters to the fields available in the GUI here. First, use your
 #' browser to view the page source. Search for the field you are interested in
 #' by searching for the title of the field. It should be enclosed in a tag.
-#' Inside the label tag, it says for = "[name_of_parameter]". Copy the string
+#' Inside the label tag, it says `for = "$name_of_parameter"`. Copy the string
 #' after for = and add it to get_blast_seeds as the name of a parameter, setting
 #' it equal to whatever you like.
 #'

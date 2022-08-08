@@ -1,6 +1,6 @@
 #' Helper function to save the state of a running blast search
 #'
-#' @param dir the directory to save in
+#' @param save_dir the directory to save in
 #' @param output_table the outputs generated so far
 #' @param unsampled_indices a vector of indices not yet sampled
 #' @param too_many_ns a vector of indices that result

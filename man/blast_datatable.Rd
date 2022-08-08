@@ -53,7 +53,24 @@ aggregating the results in a single data.frame.
 }
 \section{Saving data}{
 blast_datatable writes intermediate results and metadata about the search to
-local files as it goes. This mitigates the consequences of encountering an
-error or experiencing other interruptions.
+local files as it goes. This allows the function to resume a partially
+completed blast, mitigating the consequences of encountering an
+error or experiencing other interruptions. The local files are written to
+\code{save_dir} by \code{\link[=save_state]{save_state()}}. Manually changing these files is not
+suggested as it can change the behavior of blast_datatable. To start from an
+incomplete blast_datatable, specify the same save_dir as the incomplete
+blast. blast_datable will automatically detect save files and resume from
+where it left off.
+
+Warning: If you are resuming from an interrupted blast, make sure you supply
+the same data.frame for \code{blast_seeds}. If you intend to start a new blast,
+make sure that there is not existing blast save data in the directory you
+supply for \code{save_dir}.
+
+Note that blast_datatable does not save intermediate data
+from blastdbcmd, so if it is interupted while getting building the fasta to
+submit to blastn it will need to repeat some work when resumed. The argument
+\code{sample_size} controls the frequency with which it calls blastn, so it can
+be used to make blast_datatable save more frequently.
 }
 

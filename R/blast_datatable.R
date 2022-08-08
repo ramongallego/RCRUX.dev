@@ -19,16 +19,33 @@
 #'
 #' # Saving data
 #' blast_datatable writes intermediate results and metadata about the search to
-#' local files as it goes. This mitigates the consequences of encountering an
-#' error or experiencing other interruptions.
+#' local files as it goes. This allows the function to resume a partially
+#' completed blast, mitigating the consequences of encountering an
+#' error or experiencing other interruptions. The local files are written to
+#' `save_dir` by [RCRUX.dev::save_state()]. Manually changing these files is not
+#' suggested as it can change the behavior of blast_datatable. To start from an
+#' incomplete blast_datatable, specify the same save_dir as the incomplete
+#' blast. blast_datable will automatically detect save files and resume from
+#' where it left off.
+#'
+#' Warning: If you are resuming from an interrupted blast, make sure you supply
+#' the same data.frame for `blast_seeds`. If you intend to start a new blast,
+#' make sure that there is not existing blast save data in the directory you
+#' supply for `save_dir`.
+#'
+#' Note that blast_datatable does not save intermediate data
+#' from blastdbcmd, so if it is interupted while getting building the fasta to
+#' submit to blastn it will need to repeat some work when resumed. The argument
+#' `sample_size` controls the frequency with which it calls blastn, so it can
+#' be used to make blast_datatable save more frequently.
 #'
 #' @param blast_seeds a data.frame formatted like the output from
-#'        get_blast_seeds_multi_taxa_or_db
-#' @param save_dir a directory in which to create text files representing the
+#'        get_blast_seeds
+#' @param save_dir a directory in which to create files representing the
 #'        current state
 #' @param db_dir a directory with a blast-formatted database
 #' @param accession_taxa_path a path to an sql created by
-#'        taxonomizr::prepareDatabase()
+#'        [taxonomizr::prepareDatabase()]
 #' @param sample_size the number of entries to accumulate into a fasta before
 #'        calling blastn
 #' @param wildcards a character vector representing the number of wildcards to
@@ -40,13 +57,14 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
 
     # Default values for tracker variables
     num_rounds <- 0
-    too_many_ns <- c()
-    not_in_db <- c()
-    unsampled_indices <- c(seq_len(nrow(blast_seeds)))
+    too_many_ns <- NULL
+    not_in_db <- NULL
     output_table <- NULL
+    unsampled_indices <- c(seq_along(blast_seeds))
 
     # Pick up where it left off
-    # This needs to add rcrux_blast_data onto the path
+    # This could be improved in a bunch of ways tbh
+    # Most simply, this does the "same thing" 5 times. function
     if (file.exists(paste(save_dir, "unsampled_indices.txt", sep = "/"))) {
         rounds_path <- paste(save_dir, "num_rounds.txt", sep = "/")
         num_rounds <- as.numeric(readLines(con = rounds_path))

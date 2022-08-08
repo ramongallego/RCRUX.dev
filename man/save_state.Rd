@@ -14,6 +14,8 @@ save_state(
 )
 }
 \arguments{
+\item{save_dir}{the directory to save in}
+
 \item{output_table}{the outputs generated so far}
 
 \item{unsampled_indices}{a vector of indices not yet sampled}
@@ -25,8 +27,6 @@ in a fasta with too many Ns}
 database}
 
 \item{num_rounds}{the number of rounds so far}
-
-\item{dir}{the directory to save in}
 }
 \description{
 Helper function to save the state of a running blast search
