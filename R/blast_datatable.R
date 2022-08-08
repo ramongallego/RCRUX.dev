@@ -14,7 +14,13 @@
 #' the accession number and forward and reverse stops recorded in the table.
 #' blastdbcmd outputs sequences as .fasta-formatted strings, which
 #' blast_datatable concatenates into a multi-line fasta, then passes to blastn
-#' as an argument. blast-datatable repeats this process until no rows remain.
+#' as an argument. blast-datatable repeats this process until no rows remain,
+#' aggregating the results in a single data.frame.
+#'
+#' # Saving data
+#' blast_datatable writes intermediate results and metadata about the search to
+#' local files as it goes. This mitigates the consequences of encountering an
+#' error or experiencing other interruptions.
 #'
 #' @param blast_seeds a data.frame formatted like the output from
 #'        get_blast_seeds_multi_taxa_or_db
