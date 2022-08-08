@@ -2,7 +2,7 @@
 % Please edit documentation in R/rcrux_blast.R
 \name{rcrux_blast}
 \alias{rcrux_blast}
-\title{A wrapper function for blast_datatable that reads a data.frame from a path}
+\title{wrapper function for blast_datatable that reads a data.frame from a path}
 \usage{
 rcrux_blast(
   seeds_path,
@@ -29,7 +29,10 @@ taxonomizr}
 and not_in db into real tables}
 }
 \description{
-Reads a data.frame from path,
-then passes it to blast_datatable
-then writes the output.
+rcrux_ blast uses \code{\link[=blast_datatable]{blast_datatable()}} to search against a blast
+formatted database. It creates a directory at \code{working_dir} if one does not
+already exist and generates \code{rcrux_blast_output} and \code{.rcrux_blast_save}
+inside that directory. It passes \verb{<working_dir>/.rcrux_blast_save} to
+\code{\link[=blast_datatable]{blast_datatable()}} as the save directory and generates files in
+\code{rcrux_blast_output} recording the results of the blast.
 }

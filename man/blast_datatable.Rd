@@ -36,10 +36,24 @@ A data.frame representing the output of blastn
 }
 \description{
 Given a datatable with the column names of the datatable returned by
-RCRUX.dev::get_blast_seeds(), use blastdbcmd to convert entries into
+\code{\link[=get_blast_seeds]{get_blast_seeds()}}, use blastdbcmd to convert entries into
 fasta files, then uses blastn to query ncbi databases for those
 sequences. It compiles the results of blastn into a data.frame that it
-returns.
-Additionally, it saves its state as text files in a specified directory with
-each iteration.
+returns. Additionally, it saves its state as text files in a specified
+directory with each iteration.
 }
+\details{
+blast_datatable uses blastdbcmd and blastn to find sequences. It samples rows
+from \code{blast_seeds} and uses blastdbcmd to find a seqence that corresponds to
+the accession number and forward and reverse stops recorded in the table.
+blastdbcmd outputs sequences as .fasta-formatted strings, which
+blast_datatable concatenates into a multi-line fasta, then passes to blastn
+as an argument. blast-datatable repeats this process until no rows remain,
+aggregating the results in a single data.frame.
+}
+\section{Saving data}{
+blast_datatable writes intermediate results and metadata about the search to
+local files as it goes. This mitigates the consequences of encountering an
+error or experiencing other interruptions.
+}
+

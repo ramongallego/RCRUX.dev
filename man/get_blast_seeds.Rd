@@ -2,8 +2,7 @@
 % Please edit documentation in R/get_blast_seeds.R
 \name{get_blast_seeds}
 \alias{get_blast_seeds}
-\title{Function to query NCBI's primer_blast tool, append the taxonomy, and
-output the results as .csvs}
+\title{Query primer_blast and generate a .csv to use for rcrux_blast}
 \usage{
 get_blast_seeds(
   forward_primer,
@@ -29,14 +28,12 @@ each one in turn to NCBI}
 each primer it could be based on its degenerate primers, then passes
 each one in turn to NCBI}
 
-\item{file_out_dir}{the parent directory to place the data in.
-get_blast_seeds does not attempt to create a new directory, so
-file_out_dir should already exist}
+\item{file_out_dir}{the parent directory to place the data in.}
 
 \item{Metabarcode_name}{used to name the subdirectory and the files. If a
 directory named Metabarcode_name does not exist in file_out_dir, a
 new directory will be created. get_blast_seeds appends
-Metabarcode_name to the beginning of each of the four files it
+Metabarcode_name to the beginning of each of the two files it
 generates.}
 
 \item{accessionTaxa}{the path to sql created by taxonomizr}
@@ -58,25 +55,10 @@ to NCBI}
 
 \item{...}{additional arguments passed to primer_search, which passes it to
 NCBI}
-
-\item{num_permutations}{passed to primer_search}
-
-\item{hitsize}{passed to primer_search, which passes it to NCBI}
-
-\item{evalue}{passed to primer_search, which passes it to NCBI}
-
-\item{word_size}{passed to primer_search, which passes it to NCBI}
-
-\item{MAX_TARGET_PER_TEMPLATE}{passed to primer_search, which passes it to
-NCBI}
-
-\item{NUM_TARGETS_WITH_PRIMERS}{passed to primer_search, which passes it to
-NCBI}
 }
 \value{
-a tibble containing the same information as the csv it generates
+a data.frame containing the same information as the .csv it generates
 }
 \description{
-Function to query NCBI's primer_blast tool, append the taxonomy, and
-output the results as .csvs
+Query primer_blast and generate a .csv to use for rcrux_blast
 }

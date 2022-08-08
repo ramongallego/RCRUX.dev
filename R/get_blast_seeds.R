@@ -59,16 +59,8 @@
 #' @param maximum_length parse_primer_hits returns a table with a
 #'        product_length column. get_blast_seeds removes each row that has a
 #'        value greater than maximum_length in the product_length column
-#' @param num_permutations passed to primer_search
 #' @param primer_specificity_database passed to primer_search, which passes it
 #'        to NCBI
-#' @param hitsize passed to primer_search, which passes it to NCBI
-#' @param evalue passed to primer_search, which passes it to NCBI
-#' @param word_size passed to primer_search, which passes it to NCBI
-#' @param MAX_TARGET_PER_TEMPLATE passed to primer_search, which passes it to
-#'        NCBI
-#' @param NUM_TARGETS_WITH_PRIMERS passed to primer_search, which passes it to
-#'        NCBI
 #' @param ... additional arguments passed to primer_search, which passes it to
 #'        NCBI
 #' @return a data.frame containing the same information as the .csv it generates
