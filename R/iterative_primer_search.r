@@ -13,63 +13,59 @@
 #' @param organisms a character vector containing an id or name parseable by
 #'        NCBI as an organism. If it is a vector with multiple entries, each
 #'        entry will be queried separately.
-#' @param which NCBI databases to search. If it is a vector with multiple
-#'        entries, each entry will be queried separately.
+#' @param db which NCBI database to search.
 #' @return a data.table summarizing the results of several primer_searches
 #' @export
 iterative_primer_search <- function(forward, reverse, organisms,
-                                    databases = "nt", ...) {
+                                    db = "nt", ...) {
     output <- NULL
     # Use for loops to iterate over all the vector options
     for (org in organisms) {
-        for (db in databases) {
-            response <- try(
-                primerTree::primer_search(forward, reverse, organism = org,
-                    primer_specificity_database = db, ...),
-                silent = TRUE
-            )
-            if (class(response) == "try-error") {
-                # To do: include useful metadata and messages
-                msg <- conditionMessage(attr(response, "condition"))
-                warning(msg)
-            }
-            else {
-                # Splice the parse onto the output
-                for (r in response) {
-                    parsed <- try(
-                        primerTree::parse_primer_hits(r),
-                        silent = TRUE
-                    )
-                    if (class(parsed) == "try-error") {
-                        # To do: include useful metadata and messages
-                        msg <- conditionMessage(attr(response, "condition"))
-                        warning(msg)
-                        message("This occurred while processing organism ", org,
-                                ".")
-                    }
-                    else if (!is.data.frame(parsed)) {
-                        warning("parse_primer_hits returned an object that is
-                                not a dataframe. It will be ignored.")
-                        message("This occurred while processing organism ", org,
-                                ".")
+        response <- try(
+            primerTree::primer_search(forward, reverse, organism = org,
+                primer_specificity_database = db, ...),
+            silent = TRUE
+        )
+        if (class(response) == "try-error") {
+            # To do: include useful metadata and messages
+            msg <- conditionMessage(attr(response, "condition"))
+            warning(msg)
+        }
+        else {
+            # Splice the parse onto the output
+            for (r in response) {
+                parsed <- try(
+                    primerTree::parse_primer_hits(r),
+                    silent = TRUE
+                )
+                if (class(parsed) == "try-error") {
+                    # To do: include useful metadata and messages
+                    msg <- conditionMessage(attr(response, "condition"))
+                    warning(msg)
+                    message("This occurred while processing organism ", org,
+                            ".")
+                }
+                else if (!is.data.frame(parsed)) {
+                    warning("parse_primer_hits returned an object that is
+                            not a dataframe. It will be ignored.")
+                    message("This occurred while processing organism ", org,
+                            ".")
+                }
+                else {
+                    # turn it into a data.table
+                    # because I think that makes this faster?
+                    data.table::setDT(parsed)
+
+                    # It should only not be a data.frame
+                    # when nothing has been added yet
+                    # Why not initialize it as an empty data.table?
+                    # This is a hedge against parse_primer_hits
+                    # changing the output format
+                    if (is.null(output)) {
+                        output <- parsed
                     }
                     else {
-                        # turn it into a data.table
-                        # because I think that makes this faster?
-                        data.table::setDT(parsed)
-                        parsed <- dplyr::mutate(parsed, database = db)
-
-                        # It should only not be a data.frame
-                        # when nothing has been added yet
-                        # Why not initialize it as an empty data.table?
-                        # This is a hedge against parse_primer_hits
-                        # changing the output format
-                        if (is.null(output)) {
-                            output <- parsed
-                        }
-                        else {
-                            output <- tibble::add_row(output, parsed)
-                        }
+                        output <- tibble::add_row(output, parsed)
                     }
                 }
             }
