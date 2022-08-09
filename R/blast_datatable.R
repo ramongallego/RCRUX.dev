@@ -60,7 +60,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
     too_many_ns <- NULL
     not_in_db <- NULL
     output_table <- NULL
-    unsampled_indices <- c(seq_along(blast_seeds))
+    unsampled_indices <- seq_along(blast_seeds$accession)
 
     # Pick up where it left off
     # This could be improved in a bunch of ways tbh

@@ -29,9 +29,15 @@ run_blastdbcmd <- function(query_row, db_dir, ncbi_bin = NULL) {
         reverse <- reverse - 1
     }
     else {
+        # Swap them
         temp <- forward
-        forward <- reverse + 1
-        reverse <- temp - 1
+        forward <- reverse
+        reverse <- temp
+
+        # Tighten
+        # This could be done in fewer lines but I expanded it for clarity
+        forward <- forward + 1
+        reverse <- reverse - 1
     }
 
     # System call
