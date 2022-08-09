@@ -77,7 +77,7 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
                             return_table = TRUE) {
 
     # Start by making the directory and checking for the sql and whatnot.
-    out <- paste0(file_out_dir, Metabarcode_name, "/")
+    out <- paste0(file_out_dir, "/", Metabarcode_name, "/")
     dir.create(file_out_dir)
     dir.create(out)
     if (!file.exists(accessionTaxa)) {
