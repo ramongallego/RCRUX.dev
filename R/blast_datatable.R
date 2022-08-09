@@ -43,7 +43,7 @@
 #'        get_blast_seeds
 #' @param save_dir a directory in which to create files representing the
 #'        current state
-#' @param db_dir a directory with a blast-formatted database
+#' @param db a directory with a blast-formatted database
 #' @param accession_taxa_path a path to an sql created by
 #'        [taxonomizr::prepareDatabase()]
 #' @param sample_size the number of entries to accumulate into a fasta before
@@ -52,7 +52,7 @@
 #'        discard
 #' @return A data.frame representing the output of blastn
 #' @export
-blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
+blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
                             sample_size = 1000, wildcards = "NNNN") {
 
     # Default values for tracker variables
@@ -94,7 +94,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         # sort results into appropriate buckets
         aggregate_fasta <- NULL
         for (index in sample_indices) {
-            fasta <- run_blastdbcmd(blast_seeds[index, ], db_dir)
+            fasta <- run_blastdbcmd(blast_seeds[index, ], db)
             # Maybe in these cases we can just append directly to output?
 
             # So this is somewhat atrocious. Why do we do it this way?
@@ -116,8 +116,7 @@ blast_datatable <- function(blast_seeds, save_dir, db_dir, accession_taxa_path,
         # run blastn and aggregate results
         # This is a temporary fix for the fact that blasting things in multiple
         # dbs at once is nonsensical
-        kludge <- paste(db_dir, "nt", sep = "/")
-        blastn_output <- run_blastn(aggregate_fasta, kludge)
+        blastn_output <- run_blastn(aggregate_fasta, db)
         if (is.null(output_table)) {
             output_table <- blastn_output
         }

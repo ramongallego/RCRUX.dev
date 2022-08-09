@@ -7,7 +7,7 @@
 #' @return a vector sampled from x
 #' @export
 smart_sample <- function(x, size, ...) {
-    if(size > length(x)) {
+    if (size > length(x)) {
         return(x)
     }
     else {
