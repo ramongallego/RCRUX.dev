@@ -1,3 +1,4 @@
+
 #' Call primer_search with several parameters and aggregate the results
 #'
 #' This function acts like primer_search and parse_primer hits all in one. Its
@@ -44,13 +45,13 @@ iterative_primer_search <- function(forward, reverse, organisms,
                         msg <- conditionMessage(attr(response, "condition"))
                         warning(msg)
                         message("This occurred while processing organism ", org,
-                                " and database ", db, ".")
+                                ".")
                     }
                     else if (!is.data.frame(parsed)) {
                         warning("parse_primer_hits returned an object that is
                                 not a dataframe. It will be ignored.")
                         message("This occurred while processing organism ", org,
-                                " and database ", db, ".")
+                                ".")
                     }
                     else {
                         # turn it into a data.table

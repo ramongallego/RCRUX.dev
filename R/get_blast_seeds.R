@@ -16,7 +16,7 @@
 #' match the parameters to the fields available in the GUI here. First, use your
 #' browser to view the page source. Search for the field you are interested in
 #' by searching for the title of the field. It should be enclosed in a tag.
-#' Inside the label tag, it says `for = "$name_of_parameter"`. Copy the string
+#' Inside the label tag, it says `for = "<name_of_parameter>"`. Copy the string
 #' after for = and add it to get_blast_seeds as the name of a parameter, setting
 #' it equal to whatever you like.
 #'
@@ -53,6 +53,9 @@
 #' @param organism a vector of character vectors. Each character vector is
 #'        passed in turn to primer_search, which passes them to NCBI.
 #'        get_blast_seeds aggregates all of the results into a single file.
+#' @param mismatch the highest acceptable mismatch value. parse_primer_hits
+#'        returns a table with a mismatch column. get_blast_seeds removes each
+#'        row with a mismatch greater than the specified value.
 #' @param minimum_length parse_primer_hits returns a table with a product_length
 #'        column. get_blast_seeds removes each row that has a value less than
 #'        minimum_length in the product_length column.
@@ -84,17 +87,17 @@ get_blast_seeds <- function(forward_primer, reverse_primer,
     # Aggregate the primer_search return values
     # Then parse_primer_hits all of them
     raw_table <- iterative_primer_search(forward_primer, reverse_primer,
-                                            organism,
-                                            primer_specificity_database, ...)
+                                          organism,
+                                          primer_specificity_database, ...)
     # Throw an error if there are no results
     if (nrow(raw_table) < 1) {
       stop("Primer search returned no hits.")
     }
 
     filtered_table <- filter_primer_hits(raw_table,
-                                                forward_primer, reverse_primer,
-                                                mismatch, minimum_length,
-                                                maximum_length)
+                                          forward_primer, reverse_primer,
+                                          mismatch, minimum_length,
+                                          maximum_length)
     taxonomized_table <- get_taxonomizr_from_accession(filtered_table,
                                                         accessionTaxa)
 

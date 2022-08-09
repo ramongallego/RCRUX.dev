@@ -28,7 +28,7 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
 
     # System call
     if (is.null(ncbi_bin)) {
-        blastn_output <- system2(command = "blastn", 
+        blastn_output <- system2(command = "blastn",
                                     args = c("-db", db_dir,
                                     "-query", temp,
                                     "-outfmt", paste("\"6", "saccver", "length",
@@ -74,6 +74,9 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
                         "sequence",
                         "evalue",
                         "BLAST_db_taxids")
+    # This was a little hard for me to wrap my head around at first
+    # as_tibble creates a one-column tibble with "value" as its col name
+    # Curious if there is a better way to do this
     output_table <- blastn_output %>%
                     tibble::as_tibble() %>%
                     tidyr::separate(col = value, into = column_names,

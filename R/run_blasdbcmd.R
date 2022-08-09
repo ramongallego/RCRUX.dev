@@ -6,7 +6,7 @@
 #' @param row a row from get_blast_seeds
 #' @param db_dir a directory with a blast-formatted database
 #' @param ncbi_bin if not null use it as the parent directory for blastn
-#' @return a fasta-formatted string
+#' @return a fasta-formatted character vector
 #' @export
 run_blastdbcmd <- function(query_row, db_dir, ncbi_bin = NULL) {
     # Extract arguments
