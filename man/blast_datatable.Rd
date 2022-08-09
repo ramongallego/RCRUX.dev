@@ -7,7 +7,7 @@
 blast_datatable(
   blast_seeds,
   save_dir,
-  db_dir,
+  db,
   accession_taxa_path,
   sample_size = 1000,
   wildcards = "NNNN"
@@ -15,15 +15,15 @@ blast_datatable(
 }
 \arguments{
 \item{blast_seeds}{a data.frame formatted like the output from
-get_blast_seeds_multi_taxa_or_db}
+get_blast_seeds}
 
-\item{save_dir}{a directory in which to create text files representing the
+\item{save_dir}{a directory in which to create files representing the
 current state}
 
-\item{db_dir}{a directory with a blast-formatted database}
+\item{db}{a directory with a blast-formatted database}
 
 \item{accession_taxa_path}{a path to an sql created by
-taxonomizr::prepareDatabase()}
+\code{\link[taxonomizr:prepareDatabase]{taxonomizr::prepareDatabase()}}}
 
 \item{sample_size}{the number of entries to accumulate into a fasta before
 calling blastn}

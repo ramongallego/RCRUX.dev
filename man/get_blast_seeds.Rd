@@ -42,6 +42,10 @@ generates.}
 passed in turn to primer_search, which passes them to NCBI.
 get_blast_seeds aggregates all of the results into a single file.}
 
+\item{mismatch}{the highest acceptable mismatch value. parse_primer_hits
+returns a table with a mismatch column. get_blast_seeds removes each
+row with a mismatch greater than the specified value.}
+
 \item{minimum_length}{parse_primer_hits returns a table with a product_length
 column. get_blast_seeds removes each row that has a value less than
 minimum_length in the product_length column.}
@@ -60,7 +64,7 @@ NCBI}
 a data.frame containing the same information as the .csv it generates
 }
 \description{
-get_blast_seeds uses a modified version of \code{\link[=primerTree:primer_search]{primerTree:primer_search()}} to
+get_blast_seeds uses a modified version of \code{\link[primerTree:primer_search]{primerTree::primer_search()}} to
 query NCBI's \href{https://www.ncbi.nlm.nih.gov/tools/primer-blast/}{primer BLAST}
 tool, filters the results, then aggregates them into a single data.frame.
 As a side effect, it creates a directory at \code{file_out_dir} if one doesn't yet
@@ -74,7 +78,7 @@ get_blast_seeds passes many parameters to NCBI's primer blast tool. You can
 match the parameters to the fields available in the GUI here. First, use your
 browser to view the page source. Search for the field you are interested in
 by searching for the title of the field. It should be enclosed in a tag.
-Inside the label tag, it says \verb{for = "$name_of_parameter"}. Copy the string
+Inside the label tag, it says \verb{for = "<name_of_parameter>"}. Copy the string
 after for = and add it to get_blast_seeds as the name of a parameter, setting
 it equal to whatever you like.
 

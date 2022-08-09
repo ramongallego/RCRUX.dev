@@ -16,9 +16,7 @@ rcrux_blast(
 \arguments{
 \item{seeds_path}{a path to a csv from get_blast_seeds}
 
-\item{db_dir}{a directory containing a blast-formatted database. This should
-not be the path to the database as it appears in the blastn arguments
-(ie it should not have the name of the database trailing).}
+\item{db_dir}{a directory containing a blast-formatted database}
 
 \item{accession_taxa_path}{a path to the accessionTaxa sql created by
 taxonomizr}
