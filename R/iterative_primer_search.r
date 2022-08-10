@@ -22,7 +22,7 @@ iterative_primer_search <- function(forward, reverse, organisms,
     # Use for loops to iterate over all the vector options
     for (org in organisms) {
         response <- try(
-            primerTree::primer_search(forward, reverse, organism = org,
+            primer_search(forward, reverse, organism = org,
                 primer_specificity_database = db, ...),
             silent = TRUE
         )
@@ -35,7 +35,7 @@ iterative_primer_search <- function(forward, reverse, organisms,
             # Splice the parse onto the output
             for (r in response) {
                 parsed <- try(
-                    primerTree::parse_primer_hits(r),
+                    parse_primer_hits(r),
                     silent = TRUE
                 )
                 if (class(parsed) == "try-error") {
