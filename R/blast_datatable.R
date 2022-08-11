@@ -56,7 +56,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
                             sample_size = 1000, wildcards = "NNNN") {
 
     # Default values for tracker variables
-    num_rounds <- 0
+    num_rounds <- 1
     too_many_ns <- NULL
     not_in_db <- NULL
     output_table <- NULL
@@ -83,6 +83,9 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         output_table_path <- paste(save_dir, "output_table.txt", sep = "/")
         output_table <- read.csv(output_table_path)
     }
+
+    message(paste("BLAST round", num_rounds))
+    message(paste(length(unsampled_indices), "indices left to process."))
 
     while (length(unsampled_indices) > 0) {
         # sample some of them, removing them from the vector

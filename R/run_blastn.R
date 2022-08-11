@@ -26,6 +26,8 @@ run_blastn <- function(fasta, db_dir, temp = "temp.fasta", ncbi_bin = NULL,
     # Determine arguments
     cores <- parallel::detectCores()
 
+    message("Calling blastn. This may take a long time.")
+    
     # System call
     if (is.null(ncbi_bin)) {
         blastn_output <- system2(command = "blastn",

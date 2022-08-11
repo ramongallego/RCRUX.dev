@@ -39,7 +39,7 @@ run_blastdbcmd <- function(query_row, db, ncbi_bin = NULL) {
                                                 "-dbtype", "nucl",
                                                 "-entry", accession,
                                                 "-range", seq_range),
-                                                stdout = TRUE)
+                                                stdout = TRUE, stderr = FALSE)
         return(fasta)
     }
     else {
@@ -48,7 +48,7 @@ run_blastdbcmd <- function(query_row, db, ncbi_bin = NULL) {
                                                 "-dbtype", "nucl",
                                                 "-entry", accession,
                                                 "-range", seq_range),
-                                                stdout = TRUE)
+                                                stdout = TRUE, stderr = FALSE)
         return(fasta)
     }
 }
