@@ -15,9 +15,9 @@ save_state <- function(save_dir, output_table, unsampled_indices, too_many_ns,
     if (!dir.exists(save_dir)) {
         dir.create(save_dir)
     }
-    write.table(output_table,
-                file = paste(save_dir, "output_table.txt", sep = "/"),
-                row.names = FALSE, sep = ",")
+    write.csv(output_table,
+            file = paste(save_dir, "output_table.txt", sep = "/"),
+            row.names = FALSE)
     writeLines(as.character(unsampled_indices),
                 con = paste(save_dir, "unsampled_indices.txt", sep = "/"))
     writeLines(as.character(too_many_ns),

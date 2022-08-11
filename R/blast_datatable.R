@@ -114,15 +114,29 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         }
 
         # run blastn and aggregate results
-        # This is a temporary fix for the fact that blasting things in multiple
-        # dbs at once is nonsensical
         blastn_output <- run_blastn(aggregate_fasta, db)
+
+        # remove accesssion numbers found by blast
+        # this is not the most elegant way to do it but it's not the worst...
+        in_output <- blast_seeds$accession %in% blastn_output$output
+        in_output_indices <- seq_along(blast_seeds)[in_output]
+        # this print statement is to verify that I am doing this right
+        print("The following indices were removed from the seeds: ")
+        unsampled_indices <-
+            unsampled_indices[! unsampled_indices %in% in_output_indices]
+
         if (is.null(output_table)) {
             output_table <- blastn_output
         }
         else {
             output_table <- tibble::add_row(output_table, blastn_output)
         }
+
+        # Remove duplicated accessions, keeping the longest sequence
+        output_table <- output_table %>%
+            dplyr::group_by(accession) %>%
+            dplyr::filter(amplicon_length == max(amplicon_length)) %>%
+            dplyr::filter(!(duplicated(accession)))
 
         # save the state of the blast
         num_rounds <- num_rounds + 1

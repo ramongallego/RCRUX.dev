@@ -40,7 +40,7 @@ rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
 
     # Write output_table to dir/rcrux_blast_output/summary.csv
     summary_csv_path <- paste(output_dir, "summary.csv", sep = "/")
-    write.csv(output_table, file = summary_csv_path)
+    write.csv(output_table, file = summary_csv_path, row.names = FALSE)
 
     # Read condensed vectors and expand them
     if (expand_vectors) {
@@ -48,13 +48,13 @@ rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
         too_many_ns_indices <- as.numeric(readLines(too_many_ns_path))
         too_many_ns <- blast_seeds[too_many_ns_indices, ]
         too_many_ns_csv_path <- paste(output_dir, "too_many_ns.csv", sep = "/")
-        write.csv(too_many_ns, file = too_many_ns_csv_path)
+        write.csv(too_many_ns, file = too_many_ns_csv_path, row.names = FALSE)
 
         not_in_db_path <- paste(save_dir, "not_in_db.txt", sep = "/")
         not_in_db_indices <- as.numeric(readLines(not_in_db_path))
         not_in_db <- blast_seeds[not_in_db_indices, ]
         not_in_db_csv_path <- paste(output_dir, "not_in_db.csv", sep = "/")
-        write.csv(not_in_db, file = not_in_db_csv_path)
+        write.csv(not_in_db, file = not_in_db_csv_path, row.names = FALSE)
     }
     return(NULL)
 }
