@@ -124,7 +124,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         in_output <- blast_seeds$accession %in% blastn_output$output
         in_output_indices <- seq_along(blast_seeds)[in_output]
         # this print statement is to verify that I am doing this right
-        print("The following indices were removed from the seeds: ")
+        print("The following indices were removed from the seeds: ", in_output_indices)
         unsampled_indices <-
             unsampled_indices[! unsampled_indices %in% in_output_indices]
 
