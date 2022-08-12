@@ -84,10 +84,11 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         output_table <- read.csv(output_table_path)
     }
 
-    message(paste("BLAST round", num_rounds))
-    message(paste(length(unsampled_indices), "indices left to process."))
-
     while (length(unsampled_indices) > 0) {
+        # information about state of blast
+        message(paste("BLAST round", num_rounds))
+        message(paste(length(unsampled_indices), "indices left to process."))
+
         # sample some of them, removing them from the vector
         sample_indices <- smart_sample(unsampled_indices, sample_size)
         unsampled_indices <-
@@ -96,6 +97,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         # run blastdbcmd on each
         # sort results into appropriate buckets
         aggregate_fasta <- NULL
+        message(paste("Running blastdbcmd on", length(sample_indices), "samples."))
         pb <- progress::progress_bar$new(total = length(sample_indices))
         for (index in sample_indices) {
             fasta <- run_blastdbcmd(blast_seeds[index, ], db)
