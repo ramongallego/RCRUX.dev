@@ -145,6 +145,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
             dplyr::group_by(accession) %>%
             dplyr::filter(amplicon_length == max(amplicon_length)) %>%
             dplyr::filter(!(duplicated(accession)))
+        output_table <- dplyr::ungroup(output_table)
 
         # save the state of the blast
         num_rounds <- num_rounds + 1
