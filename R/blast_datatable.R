@@ -125,7 +125,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
 
         # remove accesssion numbers found by blast
         # this is not the most elegant way to do it but it's not the worst...
-        in_output <- blast_seeds$accession %in% blastn_output$output
+        in_output <- blast_seeds$accession %in% blastn_output$accession
         in_output_indices <- seq_along(blast_seeds)[in_output]
         # this message is to verify that I am doing this right
         message("The following indices were removed from the seeds: ")
