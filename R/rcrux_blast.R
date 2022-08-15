@@ -58,3 +58,12 @@ rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
     }
     return(NULL)
 }
+
+get_fasta_no_hyp <- function(dupt, file_out_dir, Metabarcode_name){
+    dupt_no_hiyp <- dupt %>% mutate(sequence = gsub("-", "", sequence))
+    fasta <- character(nrow(dupt_no_hiyp) * 2)
+    fasta[c(TRUE, FALSE)] <- paste0(">", dupt_no_hiyp$accession)
+    fasta[c(FALSE, TRUE)] <- dupt_no_hiyp$sequence
+    writeLines(fasta, paste0(file_out_dir, Metabarcode_name, ".fasta"))
+    +
+}
