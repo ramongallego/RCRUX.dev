@@ -123,33 +123,40 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
             pb$tick()
         }
 
-        # run blastn and aggregate results
-        blastn_output <- run_blastn(aggregate_fasta, db, ncbi_bin)
-
-        # remove accesssion numbers found by blast
-        # this is not the most elegant way to do it but it's not the worst...
-        in_output <- blast_seeds$accession %in% blastn_output$accession
-        in_output_indices <- seq_along(blast_seeds$accession)[in_output]
-        # this message is to verify that I am doing this right
-        message(length(in_output_indices),
-                "indices were removed by the filtration step.")
-        unsampled_indices <-
-            unsampled_indices[!unsampled_indices %in% in_output_indices]
-
-        # Add output to existing output
-        if (is.null(output_table)) {
-            output_table <- blastn_output
+        if (!is.character(aggregate_fasta)) {
+            message("aggregate_fasta has value ", aggregate_fasta)
+            message("It may have encountered no useable accession numbers. Proceeding to next round.")
         }
+
         else {
-            output_table <- tibble::add_row(output_table, blastn_output)
-        }
+            # run blastn and aggregate results
+            blastn_output <- run_blastn(aggregate_fasta, db, ncbi_bin)
 
-        # Remove duplicated accessions, keeping the longest sequence
-        output_table <- output_table %>%
-            dplyr::group_by(accession) %>%
-            dplyr::filter(amplicon_length == max(amplicon_length)) %>%
-            dplyr::filter(!(duplicated(accession)))
-        output_table <- dplyr::ungroup(output_table)
+            # remove accesssion numbers found by blast
+            # this is not the most elegant way to do it but it's not the worst...
+            in_output <- blast_seeds$accession %in% blastn_output$accession
+            in_output_indices <- seq_along(blast_seeds$accession)[in_output]
+            # this message is to verify that I am doing this right
+            message(length(in_output_indices),
+                    "indices were removed by the filtration step.")
+            unsampled_indices <-
+                unsampled_indices[!unsampled_indices %in% in_output_indices]
+
+            # Add output to existing output
+            if (is.null(output_table)) {
+                output_table <- blastn_output
+            }
+            else {
+                output_table <- tibble::add_row(output_table, blastn_output)
+            }
+
+            # Remove duplicated accessions, keeping the longest sequence
+            output_table <- output_table %>%
+                dplyr::group_by(accession) %>%
+                dplyr::filter(amplicon_length == max(amplicon_length)) %>%
+                dplyr::filter(!(duplicated(accession)))
+            output_table <- dplyr::ungroup(output_table)
+        }
 
         # save the state of the blast
         num_rounds <- num_rounds + 1
