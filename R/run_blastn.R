@@ -24,6 +24,8 @@ run_blastn <- function(fasta, db_dir, temp = NULL, ncbi_bin = NULL,
         temp <- tempfile()
     }
 
+    message("Generated a temporary fasta at ", temp)
+
     writeLines(fasta, con = temp)
 
     # Determine arguments
