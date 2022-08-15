@@ -46,6 +46,8 @@
 #' @param db a directory with a blast-formatted database
 #' @param accession_taxa_path a path to an sql created by
 #'        [taxonomizr::prepareDatabase()]
+#' @param ncbi_bin the directory that the blast+ suite is in. If NULL, the
+#'        program will use your PATH environmental variable to locate them
 #' @param sample_size the number of entries to accumulate into a fasta before
 #'        calling blastn
 #' @param wildcards a character vector representing the number of wildcards to
@@ -53,6 +55,7 @@
 #' @return A data.frame representing the output of blastn
 #' @export
 blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
+                            ncbi_bin = NULL,
                             sample_size = 1000, wildcards = "NNNN") {
 
     # Default values for tracker variables
@@ -100,7 +103,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         message(paste("Running blastdbcmd on", length(sample_indices), "samples."))
         pb <- progress::progress_bar$new(total = length(sample_indices))
         for (index in sample_indices) {
-            fasta <- run_blastdbcmd(blast_seeds[index, ], db)
+            fasta <- run_blastdbcmd(blast_seeds[index, ], db, ncbi_bin)
             # Maybe in these cases we can just append directly to output?
 
             # So this is somewhat atrocious. Why do we do it this way?
@@ -121,7 +124,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         }
 
         # run blastn and aggregate results
-        blastn_output <- run_blastn(aggregate_fasta, db)
+        blastn_output <- run_blastn(aggregate_fasta, db, ncbi_bin)
 
         # remove accesssion numbers found by blast
         # this is not the most elegant way to do it but it's not the worst...
