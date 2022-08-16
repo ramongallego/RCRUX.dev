@@ -68,7 +68,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
     # Default values for tracker variables
     num_rounds <- 1
     too_many_ns <- NULL
-    not_in_db <- NULL
+    blastdbcmd_failed <- NULL
     output_table <- NULL
     unsampled_indices <- seq_along(blast_seeds$accession)
 
@@ -82,8 +82,8 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         ns_path <- paste(save_dir, "too_many_ns.txt", sep = "/")
         too_many_ns <- as.numeric(readLines(con = ns_path))
 
-        not_in_db_path <- paste(save_dir, "not_in_db.txt", sep = "/")
-        not_in_db <- as.numeric(readLines(con = not_in_db_path))
+        blastdbcmd_failed_path <- paste(save_dir, "blastdbcmd_failed.txt", sep = "/")
+        blastdbcmd_failed <- as.numeric(readLines(con = blastdbcmd_failed_path))
 
         unsampled_indices_path <-
             paste(save_dir, "unsampled_indices.txt", sep = "/")
@@ -91,7 +91,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
             as.numeric(readLines(con = unsampled_indices_path))
 
         output_table_path <- paste(save_dir, "output_table.txt", sep = "/")
-        output_table <- read.csv(output_table_path)
+        output_table <- read.csv(output_table_path, colClasses = "character")
     }
 
     while (length(unsampled_indices) > 0) {
@@ -119,7 +119,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
             # This causes an error because there are no characters to check, so
             # the if has nothing to operate on. This kludgey `or` fixes that.
             if (length(fasta) == 0 || nchar(fasta) == 0) {
-                not_in_db <- append(not_in_db, index)
+                blastdbcmd_failed <- append(blastdbcmd_failed, index)
             }
             else if (length(grep(wildcards, fasta)) > 0) {
                 too_many_ns <- append(too_many_ns, index)
@@ -168,7 +168,7 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
         # save the state of the blast
         num_rounds <- num_rounds + 1
         save_state(save_dir, output_table, unsampled_indices, too_many_ns,
-            not_in_db, num_rounds)
+            blastdbcmd_failed, num_rounds)
     }
 
     # If we get a taxid from blastn can we just use that?
