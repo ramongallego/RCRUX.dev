@@ -25,10 +25,23 @@
 #' @param working_dir a directory in which to save partial and complete output
 #' @param expand_vectors logical, determines whether to expand too_many_Ns
 #'        and not_in db into real tables and write them in the output directory
+#' @param warnings value to set the "warn" option to during the function call.
+#'        On exit it returns to the previous value. Setting this argument to
+#'        NULL will not change the option.
+#' @param ... additional arguments passed to [RCRUX.dev::blast_datatable()]
 #' @return NULL
 #' @export
 rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
-                        expand_vectors = TRUE, ...) {
+                        expand_vectors = TRUE, warnings = 0, ...) {
+    # So that run_blastdbcmd doesn't overwhelm the user with errors
+    # Possibly we should discard the warnings from blastdb as it's entirely
+    # expected to encounter so values that are not in the database.
+    if (!is.null(warnings)) {
+        old_warnings <- getOption("warn")
+        on.exit(options(warn = old_warnings))
+        options(warn = warnings)
+    }
+
     output_dir <- paste(working_dir, "rcrux_blast_output", sep = "/")
     save_dir <- paste(working_dir, "rcrux_blast_save", sep = "/")
     dir.create(working_dir)
@@ -59,11 +72,10 @@ rcrux_blast <- function(seeds_path, db_dir, accession_taxa_path, working_dir,
     return(NULL)
 }
 
-get_fasta_no_hyp <- function(dupt, file_out_dir, Metabarcode_name){
+get_fasta_no_hyp <- function(dupt, file_out_dir, Metabarcode_name) {
     dupt_no_hiyp <- dupt %>% mutate(sequence = gsub("-", "", sequence))
     fasta <- character(nrow(dupt_no_hiyp) * 2)
     fasta[c(TRUE, FALSE)] <- paste0(">", dupt_no_hiyp$accession)
     fasta[c(FALSE, TRUE)] <- dupt_no_hiyp$sequence
     writeLines(fasta, paste0(file_out_dir, Metabarcode_name, ".fasta"))
-    +
 }

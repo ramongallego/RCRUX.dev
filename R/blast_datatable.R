@@ -48,6 +48,8 @@
 #'        [taxonomizr::prepareDatabase()]
 #' @param ncbi_bin the directory that the blast+ suite is in. If NULL, the
 #'        program will use your PATH environmental variable to locate them
+#' @param force_db if true, try to use blast databases that don't appear to
+#'        be blast databases
 #' @param sample_size the number of entries to accumulate into a fasta before
 #'        calling blastn
 #' @param wildcards a character vector representing the number of wildcards to
@@ -55,8 +57,13 @@
 #' @return A data.frame representing the output of blastn
 #' @export
 blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
-                            ncbi_bin = NULL,
+                            ncbi_bin = NULL, force_db = FALSE,
                             sample_size = 1000, wildcards = "NNNN") {
+
+    if (!(check_db(db) || force_db)) {
+        stop(db, " is probably not a blast database.
+        Use force_db = TRUE to try it anyway.")
+    }
 
     # Default values for tracker variables
     num_rounds <- 1
@@ -168,4 +175,9 @@ blast_datatable <- function(blast_seeds, save_dir, db, accession_taxa_path,
     output_table_taxonomy <-
         get_taxonomizr_from_accession(output_table, accession_taxa_path)
     return(output_table_taxonomy)
+}
+
+# True if the db is a blast database, false if it's not
+check_db <- function(db) {
+    try(system2("blastdbcmd", args = c("-db", db, "-info"), stdout = FALSE)) == 0
 }
