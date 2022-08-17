@@ -7,11 +7,11 @@
 run_blastdbcmd(query_row, db, ncbi_bin = NULL)
 }
 \arguments{
+\item{query_row}{a row from get_blast_seeds}
+
 \item{db}{a directory with a blast-formatted database}
 
 \item{ncbi_bin}{if not null use it as the parent directory for blastn}
-
-\item{row}{a row from get_blast_seeds}
 }
 \value{
 a fasta-formatted character vector

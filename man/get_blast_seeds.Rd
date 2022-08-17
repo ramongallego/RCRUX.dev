@@ -15,6 +15,8 @@ get_blast_seeds(
   minimum_length = 5,
   maximum_length = 500,
   primer_specificity_database = "nt",
+  HITSIZE = 1e+05,
+  NUM_TARGETS_WITH_PRIMERS = 1e+05,
   ...,
   return_table = TRUE
 )
@@ -57,6 +59,12 @@ value greater than maximum_length in the product_length column}
 \item{primer_specificity_database}{passed to primer_search, which passes it
 to NCBI}
 
+\item{HITSIZE}{a primer BLAST search parameter set high to maximize the
+number of observations returned.}
+
+\item{NUM_TARGETS_WITH_PRIMERS}{a primer BLAST search parameter set high to
+maximize the number of observations returned.}
+
 \item{...}{additional arguments passed to primer_search, which passes it to
 NCBI}
 }
@@ -75,22 +83,33 @@ taxonomy.
 }
 \section{Additional arguments passed to primer BLAST}{
 get_blast_seeds passes many parameters to NCBI's primer blast tool. You can
-match the parameters to the fields available in the GUI here. First, use your
+match the parameters to the fields available in the GUI
+\href{https://www.ncbi.nlm.nih.gov/tools/primer-blast/}{here}. First, use your
 browser to view the page source. Search for the field you are interested in
 by searching for the title of the field. It should be enclosed in a tag.
 Inside the label tag, it says \verb{for = "<name_of_parameter>"}. Copy the string
 after for = and add it to get_blast_seeds as the name of a parameter, setting
 it equal to whatever you like.
 
-Example: I want to set "Exon junction span" to 10. I open the source of the
-primer designing tool and look for that string. I find the following:\preformatted{<label class="m" for="PRIMER_ON_SPLICE_SITE">Exon junction span</label>
-}
+As of 2022-08-16, the primer blast GUI
+contains some options that are not implemented by primer_search.
+primer_search doesn't include explicit documentation of allowed options, but
+it will quickly report if an option isn't allowed, so trial and error will
+not be very time consuming.
 
-I copy PRIMER_ON_SPLICE_SITE and add it to get_blast_seeds:\preformatted{get_blast_seeds("TAGAACAGGCTCCTCTAG", "TTAGATACCCCACTATGC",
+Example: I want to set "Exon junction span" to 10. I open the source of the
+primer designing tool and look for that string. I find the following:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{<label class="m" for="PRIMER_ON_SPLICE_SITE">Exon junction span</label>
+}\if{html}{\out{</div>}}
+
+I copy PRIMER_ON_SPLICE_SITE and add it to get_blast_seeds:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{get_blast_seeds("TAGAACAGGCTCCTCTAG", "TTAGATACCCCACTATGC",
              blast_seeds_parent, "12S_V5F1", accession_taxa_path,
              organism = c("7776"), MAX_TARGET_PER_TEMPLATE = 10,
              PRIMER_ON_SPLICE_SITE = "10"
              return_table = FALSE)
-}
+}\if{html}{\out{</div>}}
 }
 

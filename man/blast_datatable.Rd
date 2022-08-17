@@ -9,6 +9,8 @@ blast_datatable(
   save_dir,
   db,
   accession_taxa_path,
+  ncbi_bin = NULL,
+  force_db = FALSE,
   sample_size = 1000,
   wildcards = "NNNN"
 )
@@ -24,6 +26,12 @@ current state}
 
 \item{accession_taxa_path}{a path to an sql created by
 \code{\link[taxonomizr:prepareDatabase]{taxonomizr::prepareDatabase()}}}
+
+\item{ncbi_bin}{the directory that the blast+ suite is in. If NULL, the
+program will use your PATH environmental variable to locate them}
+
+\item{force_db}{if true, try to use blast databases that don't appear to
+be blast databases}
 
 \item{sample_size}{the number of entries to accumulate into a fasta before
 calling blastn}
