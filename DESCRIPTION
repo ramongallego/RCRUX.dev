@@ -7,6 +7,19 @@ Authors@R:
 Description: What the package does (one paragraph).
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
+Imports:
+    tibble,
+    dplyr,
+    magrittr,
+    taxonomizr,
+    data.table,
+    tidyr,
+    stringr,
+    lubridate
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

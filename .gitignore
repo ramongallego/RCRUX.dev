@@ -1,1 +1,6 @@
 .Rproj.user
+inst/doc
+*.Rproj
+vignettes/*.html
+.DS_Store
+convenience.r
