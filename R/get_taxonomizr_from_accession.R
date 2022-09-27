@@ -7,6 +7,9 @@
 get_taxonomizr_from_accession <- function(input, accessionTaxa_path) {
     input_taxids <- taxonomizr::accessionToTaxa(input$accession,
                                             accessionTaxa_path)
+    ## Moncho´s suggestion to make this less redundant
+    ## input %>% mutate(taxid = input_taxids) -> output
+    ## input_taxids <- distinct(input_taxids)
 
     input_taxonomy <- taxonomizr::getTaxonomy(input_taxids, accessionTaxa_path,
                                 desiredTaxa = c("species", "superkingdom",
@@ -18,6 +21,12 @@ get_taxonomizr_from_accession <- function(input, accessionTaxa_path) {
                                 "parvorder", "varietas"))
 
     output <- dplyr::mutate(input, taxid = input_taxids, data.frame(input_taxonomy))
+
+    ## And then instead of the line above
+
+    # output <- tibble(taxid = input_taxids,
+    #                   data.frame(input_taxonomy)) %>%
+    #            left_join(output, by = taxid)
 
     # Use mutate to add colummns because it already (correctly) assumed that
     # that stuff would be in the right order and mutate uses memory well.
