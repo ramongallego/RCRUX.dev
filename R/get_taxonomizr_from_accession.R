@@ -13,7 +13,7 @@ get_taxonomizr_from_accession <- function(input, accessionTaxa_path,
                                             accessionTaxa_path)
     ## Moncho´s suggestion to make this less redundant
     input %>% mutate(taxid = input_taxids) -> output
-    input_taxids <- distinct(input_taxids)
+    input_taxids <- unique(input_taxids)
 
     input_taxonomy <- taxonomizr::getTaxonomy(input_taxids, accessionTaxa_path,
                                 desiredTaxa = c("species", "superkingdom",
